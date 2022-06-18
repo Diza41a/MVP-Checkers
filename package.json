@@ -1,0 +1,51 @@
+{
+  "name": "mvp-checkers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client-dev": "webpack --mode=production --watch",
+    "server-dev": "nodemon server/index.js",
+    "sass-dev": "sass client/dist/styles/style.scss client/dist/styles/style.css --watch"
+  },
+  "repository": "git+https://github.com/Diza41a/MVP-Checkers.git",
+  "keywords": [],
+  "author": "Davyd Zakorchennyi <Diza41a@mail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Diza41a/MVP-Checkers/issues"
+  },
+  "homepage": "https://github.com/Diza41a/MVP-Checkers#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "babel-loader": "^8.2.5",
+    "css-loader": "^6.7.1",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "sass": "^1.52.3",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.2"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "mongodb": "^4.7.0",
+    "mongoose": "^6.4.0",
+    "nodemon": "^2.0.16",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^8.3.2"
+  }
+}
