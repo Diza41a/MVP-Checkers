@@ -1,3 +1,105 @@
 * {
-  background-color: black;
+  margin: 0;
+  padding: 0;
+}
+
+$mainDark:#2b2d42;
+$mainLight: #edf2f4;
+$mainGray: #8d99ae;
+$mainRed: #d90429;
+
+$whiteChecker: rgba(0, 0, 255, 0.864);
+$blackChecker: rgba(255, 0, 0, 0.864);
+$whiteCheckerTransparent: rgba(0, 0, 255, 0.444);
+$blackCheckerTransparent: rgba(255, 0, 0, 0.444);
+
+$boardBorderSize: 0.6vw;
+@mixin fieldSize($size) {
+  width: 40vw / $size - $boardBorderSize;
+  height: 40vw / $size - $boardBorderSize;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #2b2d42;
+  // Animated background (https://www.youtube.com/watch?v=htXCnRDjdvc)
+  // .bg {
+  //   background-image: linear-gradient(-60deg, $mainDark 50%, $mainLight 50%);
+  //   position: fixed;
+  //   bottom: 0;
+  //   top: 0;
+  //   left: -50%;
+  //   right: -50%;
+  //   z-index: -1;
+  //   opacity: 0.5;
+  //   animation: slide 13s ease-in-out infinite alternate;
+  // }
+  // .bg2 {
+  //   animation-direction: alternate-reverse;
+  //   animation-duration: 14s;
+  // }
+  // .bg3 {
+  //   animation-duration: 15s;
+  // }
+  // @keyframes slide {
+  //   from {
+  //     transform: translate(-25%);
+  //   }
+  //   to {
+  //     transform: translate(25%);
+  //   }
+  // }
+
+
+  #root {
+    // Checker board
+    .checker-board {
+      width: 40vw;
+      height: 40vw;
+      border-spacing:0;
+      background-color: white;
+      border: $boardBorderSize solid white;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+      box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+      tbody {
+        border: 0.17vw solid black;
+        .checker-field {
+          $boardSizes: 8, 10, 12;
+          @each $size in $boardSizes {
+            &:nth-last-child(n) {
+              @include fieldSize(($size));
+            }
+          }
+          &.even:nth-child(2n),  &.odd:nth-child(2n - 1) {
+            background-color: black;
+            &.potential-move {
+              background-color: $mainGray;
+            }
+          }
+          // All pieces
+          div {
+            margin: auto;
+            width: 65%;
+            height: 65%;
+            border-radius: 50%;
+            border: 0.4vw solid white;
+            cursor: pointer;
+            &.white-piece {
+              background-color: $whiteCheckerTransparent;
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+              box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
+            }
+            &.black-piece {
+              background-color: $blackCheckerTransparent;
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+              box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+            }
+          }
+        }
+      }
+    }
+  }
 }

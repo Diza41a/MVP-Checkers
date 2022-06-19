@@ -1,5 +1,62 @@
 * {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #2b2d42;
+}
+body #root .checker-board {
+  width: 40vw;
+  height: 40vw;
+  border-spacing: 0;
+  background-color: white;
+  border: 0.6vw solid white;
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+}
+body #root .checker-board tbody {
+  border: 0.17vw solid black;
+}
+body #root .checker-board tbody .checker-field:nth-last-child(n) {
+  width: 4.4vw;
+  height: 4.4vw;
+}
+body #root .checker-board tbody .checker-field:nth-last-child(n) {
+  width: 3.4vw;
+  height: 3.4vw;
+}
+body #root .checker-board tbody .checker-field:nth-last-child(n) {
+  width: 2.7333333333vw;
+  height: 2.7333333333vw;
+}
+body #root .checker-board tbody .checker-field.even:nth-child(2n), body #root .checker-board tbody .checker-field.odd:nth-child(2n-1) {
   background-color: black;
+}
+body #root .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
+  background-color: #8d99ae;
+}
+body #root .checker-board tbody .checker-field div {
+  margin: auto;
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  border: 0.4vw solid white;
+  cursor: pointer;
+}
+body #root .checker-board tbody .checker-field div.white-piece {
+  background-color: rgba(0, 0, 255, 0.444);
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
+}
+body #root .checker-board tbody .checker-field div.black-piece {
+  background-color: rgba(255, 0, 0, 0.444);
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
 }
 
 /*# sourceMappingURL=style.css.map */
