@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // Subcomponent imports
+import LoginForm from './subcomponents/login/LoginForm.jsx';
 import CheckerBoard from './subcomponents/main/CheckerBoard.jsx';
 
 // Create the root of the app by selection where the app should be mounted in the dom
@@ -18,7 +19,10 @@ function App() {
 
   if (!isLoading) {
     return (
-      <CheckerBoard />
+      <>
+        <LoginForm />
+        {/* <CheckerBoard /> */}
+      </>
     );
   } else {
     return <div>Loading...</div>;

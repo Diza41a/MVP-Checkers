@@ -1,8 +1,14 @@
-* {
-  margin: 0;
-  padding: 0;
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../assets/fonts/Montserrat/static/Montserrat-Light.ttf');
 }
 
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('../assets/fonts/Montserrat/static/Montserrat-SemiBold.ttf');
+}
+
+$fontSize: 24px;
 $mainDark:#2b2d42;
 $mainLight: #edf2f4;
 $mainGray: #8d99ae;
@@ -15,8 +21,15 @@ $blackCheckerTransparent: rgba(255, 0, 0, 0.444);
 
 $boardBorderSize: 0.6vw;
 @mixin fieldSize($size) {
-  width: 40vw / $size - $boardBorderSize;
-  height: 40vw / $size - $boardBorderSize;
+  width: calc(40vw / $size) - $boardBorderSize;
+  height: calc(40vw / $size) - $boardBorderSize;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-size: $fontSize;
+  font-family: 'Montserrat';
 }
 
 html {
@@ -24,7 +37,11 @@ html {
 }
 
 body {
-  background-color: #2b2d42;
+  background: url(../assets/images/background.jpeg);
+
+  // background-color: #2b2d42;
+
+
   // Animated background (https://www.youtube.com/watch?v=htXCnRDjdvc)
   // .bg {
   //   background-image: linear-gradient(-60deg, $mainDark 50%, $mainLight 50%);
@@ -55,6 +72,84 @@ body {
 
 
   #root {
+    .login-form-wrap {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // Login form
+      .login-form {
+        width: 40vw;
+        padding: 2vw;
+        text-align: center;
+        background-color: rgba($color: $mainDark, $alpha: 0.7);
+        border-radius: 1vw;
+
+        .logo {
+          font-family: 'Montserrat-Bold';
+          font-size: $fontSize * 2.4;
+          font-weight: lighter;
+          color: $mainLight;
+          margin-bottom: 0.5vw;
+        }
+
+        .login-welcome {
+          font-size: $fontSize * 1.3;
+          color: $mainLight;
+        }
+
+        .login-input-wrap {
+          position: relative;
+          margin: 2vw;
+
+          input {
+            width: 30vw;
+            font-size: $fontSize * 1.1;
+            padding: 0.75vw 0 0.75vw 7.5vw;
+            border-radius: 0.5vw;
+            border: none;
+            outline: none;
+            font-size: $fontSize * 1.2;
+
+            &[type='password'] {
+              font-family: Verdana;
+              letter-spacing: 0.125em;
+
+              &::placeholder {
+                font-family: 'Montserrat';
+                letter-spacing: normal;
+              }
+            }
+          }
+
+          .login-icon {
+            position: absolute;
+            left: 2vw;
+            top: -0.3vw;
+            border-radius: 50%;
+            font-size: $fontSize * 2.3;
+            padding: 0.6vw 0.8vw;
+            color: $mainLight;
+            background-color: $mainRed;
+          }
+        }
+
+        #login-submit {
+          font-family: 'Montserrat-Bold';
+          font-size: $fontSize * 1.3;
+          width: 50%;
+          padding: 0.75vw;
+          margin: 1vw 0 2vw 0;
+          border-radius: 0.75vw;
+          background-color: $mainRed;
+          color: $mainLight;
+          border: none;
+          cursor: pointer;
+        }
+      }
+    }
+
     // Checker board
     .checker-board {
       width: 40vw;
@@ -87,6 +182,7 @@ body {
             border-radius: 50%;
             border: 0.4vw solid white;
             cursor: pointer;
+
             @mixin queenEffect ($color) {
               content: " ";
               display: block;
@@ -137,3 +233,15 @@ body {
     }
   }
 }
+
+// $checkerBoardBreakpoint: 1000px;
+// @media (max-width: $checkerBoardBreakpoint) {
+//   body {
+//     #root {
+//       .checker-board {
+//         width: 80vw;
+//         height: 80vh;
+//       }
+//     }
+//   }
+// }

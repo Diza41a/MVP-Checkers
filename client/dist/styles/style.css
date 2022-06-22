@@ -1,6 +1,16 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url("../assets/fonts/Montserrat/static/Montserrat-Light.ttf");
+}
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: url("../assets/fonts/Montserrat/static/Montserrat-SemiBold.ttf");
+}
 * {
   margin: 0;
   padding: 0;
+  font-size: 24px;
+  font-family: "Montserrat";
 }
 
 html {
@@ -8,7 +18,75 @@ html {
 }
 
 body {
-  background-color: #2b2d42;
+  background: url(../assets/images/background.jpeg);
+}
+body #root .login-form-wrap {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body #root .login-form-wrap .login-form {
+  width: 40vw;
+  padding: 2vw;
+  text-align: center;
+  background-color: rgba(43, 45, 66, 0.7);
+  border-radius: 1vw;
+}
+body #root .login-form-wrap .login-form .logo {
+  font-family: "Montserrat-Bold";
+  font-size: 57.6px;
+  font-weight: lighter;
+  color: #edf2f4;
+  margin-bottom: 0.5vw;
+}
+body #root .login-form-wrap .login-form .login-welcome {
+  font-size: 31.2px;
+  color: #edf2f4;
+}
+body #root .login-form-wrap .login-form .login-input-wrap {
+  position: relative;
+  margin: 2vw;
+}
+body #root .login-form-wrap .login-form .login-input-wrap input {
+  width: 30vw;
+  font-size: 26.4px;
+  padding: 0.75vw 0 0.75vw 7.5vw;
+  border-radius: 0.5vw;
+  border: none;
+  outline: none;
+  font-size: 28.8px;
+}
+body #root .login-form-wrap .login-form .login-input-wrap input[type=password] {
+  font-family: Verdana;
+  letter-spacing: 0.125em;
+}
+body #root .login-form-wrap .login-form .login-input-wrap input[type=password]::placeholder {
+  font-family: "Montserrat";
+  letter-spacing: normal;
+}
+body #root .login-form-wrap .login-form .login-input-wrap .login-icon {
+  position: absolute;
+  left: 2vw;
+  top: -0.3vw;
+  border-radius: 50%;
+  font-size: 55.2px;
+  padding: 0.6vw 0.8vw;
+  color: #edf2f4;
+  background-color: #d90429;
+}
+body #root .login-form-wrap .login-form #login-submit {
+  font-family: "Montserrat-Bold";
+  font-size: 31.2px;
+  width: 50%;
+  padding: 0.75vw;
+  margin: 1vw 0 2vw 0;
+  border-radius: 0.75vw;
+  background-color: #d90429;
+  color: #edf2f4;
+  border: none;
+  cursor: pointer;
 }
 body #root .checker-board {
   width: 40vw;

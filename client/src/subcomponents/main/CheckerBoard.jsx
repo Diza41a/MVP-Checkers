@@ -14,9 +14,9 @@ export default function CheckerBoard() {
   let currentPiece = null;
 
   // Sound effects
-  const moveSound = new Audio('../assets/move.mp3');
-  const newQueenSound = new Audio('../assets/queened.wav');
-  const destroyPieceSound = new Audio('../assets/eaten.wav');
+  const moveSound = new Audio('../assets/sounds/move.mp3');
+  const newQueenSound = new Audio('../assets/sounds/queened.wav');
+  const destroyPieceSound = new Audio('../assets/sounds/eaten.wav');
 
   // componentDidMount
   // Give state a board matrix from the server
