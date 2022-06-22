@@ -53,10 +53,52 @@ body #root .checker-board tbody .checker-field div.white-piece {
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
 }
+body #root .checker-board tbody .checker-field div.white-queen {
+  background-color: rgba(0, 0, 255, 0.444);
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
+  position: relative;
+}
+body #root .checker-board tbody .checker-field div.white-queen::after {
+  content: " ";
+  display: block;
+  box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
+  border: 0.2vw solid white;
+  border-radius: 50%;
+  height: 50%;
+  width: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
 body #root .checker-board tbody .checker-field div.black-piece {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
+}
+body #root .checker-board tbody .checker-field div.black-queen {
+  background-color: rgba(255, 0, 0, 0.444);
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
+  position: relative;
+}
+body #root .checker-board tbody .checker-field div.black-queen::after {
+  content: " ";
+  display: block;
+  box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
+  border: 0.2vw solid white;
+  border-radius: 50%;
+  height: 50%;
+  width: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
 /*# sourceMappingURL=style.css.map */
