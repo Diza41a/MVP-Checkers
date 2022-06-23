@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { AuthenticationContext } from '../../index';
 
 // import CheckerBoard from './CheckerBoard.js';
@@ -15,8 +16,8 @@ const pieces = [null, 'white-piece', 'white-queen', 'black-piece', 'black-queen'
 
 export default function CheckerBoard() {
   const [isLoading, toggleLoading] = useState(true);
-  const { boardMeta, setBoardMeta } = useContext(AuthenticationContext);
-  const [turn, toggleTurn] = useState('white');
+  const { boardMeta, setBoardMeta, userData } = useContext(AuthenticationContext);
+  // const [turn, toggleTurn] = useState('white');
   const [
     piecesToEat, setPiecesToEat,
   ] = useState(null); // { piece: { row, col }, eadables: [{row, col}, ...] }
@@ -53,6 +54,12 @@ export default function CheckerBoard() {
 
   // Get all of the potential moves for selected piece
   const getMoves = (e) => {
+    console.log(boardMeta, userData);
+    const turn = boardMeta.gameStatus;
+    if (!((boardMeta.blackPlayerUsername === userData.username && turn === 'black')
+    || (boardMeta.whitePlayerUsername === userData.username && turn === 'white'))) {
+      return;
+    }
     // Clear all higlighted fields
     document.querySelectorAll('.potential-move').forEach((field) => {
       field.classList.remove('potential-move');
@@ -153,8 +160,13 @@ export default function CheckerBoard() {
         // Otherwise, reset the obligations
         setPiecesToEat(null);
       }
+      console.log(boardMeta.board);
       // eslint-disable-next-line no-unused-expressions
-      turn === 'white' ? toggleTurn('black') : toggleTurn('white');
+      const gameStatus = boardMeta.gameStatus === 'white' ? 'black' : 'white';
+      const newBoardMeta = { ...boardMeta, gameStatus };
+      axios.put(`/board?id=${boardMeta.id}`, newBoardMeta)
+        .then(() => setBoardMeta(newBoardMeta))
+        .catch((err) => console.log(err));
     }
   };
 
@@ -176,7 +188,7 @@ export default function CheckerBoard() {
     );
   }
   const visualBoard = (
-    <table className="checker-board">
+    <table className={boardMeta.blackPlayerUsername === userData.username ? 'checker-board reversed' : 'checker-board'}>
       <tbody>
         {boardMeta.board.map((row, rowI) => (
           <tr key={rowI}>

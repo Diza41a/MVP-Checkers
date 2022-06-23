@@ -278,6 +278,10 @@ body {
 
       // Checker board
       .checker-board {
+        &.reversed {
+          transform: scaleY(-1);
+        }
+
         flex-basis: 60%;
         width: 55vw;
         height: 55vw;

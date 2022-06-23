@@ -78,8 +78,26 @@ const getBoard = (req, res) => {
   }
 };
 
+const updateBoard = (req, res) => {
+  const newBoardMeta = req.body;
+  console.log(newBoardMeta);
+  Boards.findOneAndUpdate(
+    { id: newBoardMeta.id },
+    { board: newBoardMeta.board, gameStatus: newBoardMeta.gameStatus },
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      } else {
+        res.end();
+      }
+    },
+  );
+};
+
 module.exports = {
   getUserData,
   postInvite,
   getBoard,
+  updateBoard,
 };

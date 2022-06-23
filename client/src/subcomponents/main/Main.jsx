@@ -44,6 +44,7 @@ export default function Main() {
       e.target.classList.add('selected');
       axios.get(`/board?id=${boardId}`)
         .then((boardResponse) => {
+          console.log(boardResponse.data);
           setBoardMeta(boardResponse.data);
         })
         .catch((err) => console.log(err));

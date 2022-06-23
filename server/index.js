@@ -4,7 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { authenticate } = require('./controllers/authentication');
-const { getUserData, postInvite, getBoard } = require('./controllers/users');
+const {
+  getUserData, postInvite, getBoard, updateBoard,
+} = require('./controllers/users');
 
 const app = express();
 // Middleware
@@ -33,6 +35,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// POST routes
+app.post('/invite', (req, res) => {
+  postInvite(req, res);
+});
+
 // GET routes
 app.get('/userData', (req, res) => {
   getUserData(req, res);
@@ -42,9 +49,9 @@ app.get('/board', (req, res) => {
   getBoard(req, res);
 });
 
-// POST routes
-app.post('/invite', (req, res) => {
-  postInvite(req, res);
+// PUT routes
+app.put('/board', (req, res) => {
+  updateBoard(req, res);
 });
 
 // Serve App

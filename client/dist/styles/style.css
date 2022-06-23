@@ -205,6 +205,9 @@ body #root .main-wrap .checker-board {
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
 }
+body #root .main-wrap .checker-board.reversed {
+  transform: scaleY(-1);
+}
 body #root .main-wrap .checker-board tbody {
   border: 0.17vw solid black;
 }
