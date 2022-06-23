@@ -2,26 +2,49 @@
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
-const { authenticate } = require('./controllers/authenctication');
+const cookieParser = require('cookie-parser');
+const { authenticate } = require('./controllers/authentication');
+const { getUserData, postInvite, getBoard } = require('./controllers/users');
 
 const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(session({
-  secret: 'Mr. Hamster',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: false,
-    secure: false,
-  },
-}));
-
+app.use(cookieParser());
+// app.use(session({
+//   secret: 'Mr. Hamster',
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {
+//     httpOnly: false,
+//     secure: false,
+//   },
+// }));
 // authenticate
 app.post('/authenticate', (req, res) => {
   authenticate(req, res);
+});
+
+app.use((req, res, next) => {
+  const { s_id: sessionId } = req.cookies;
+  if (sessionId !== undefined) {
+    req.session_id = sessionId;
+  }
+  next();
+});
+
+// GET routes
+app.get('/userData', (req, res) => {
+  getUserData(req, res);
+});
+
+app.get('/board', (req, res) => {
+  getBoard(req, res);
+});
+
+// POST routes
+app.post('/invite', (req, res) => {
+  postInvite(req, res);
 });
 
 // Serve App

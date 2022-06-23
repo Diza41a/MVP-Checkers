@@ -2,7 +2,9 @@ const { v4: uuidv4 } = require('uuid');
 const { Users } = require('../models/Users');
 
 const authenticate = (req, res) => {
-  const { username, password } = req.body;
+  const { password } = req.body;
+  let { username } = req.body;
+  username = username.toLowerCase();
   if (username === undefined || password === undefined) {
     // Some input was not provided
     res.sendStatus(400);
@@ -20,12 +22,12 @@ const authenticate = (req, res) => {
             // Database error
             res.sendStatus(500);
           } else {
-            req.session.s_id = sessionIdString;
+            res.cookie('s_id', sessionIdString);
             res.end();
           }
         });
       } else if (entry.username === username && entry.password === password) {
-        req.session.s_id = entry.sessionIdString;
+        res.cookie('s_id', entry.sessionIdString);
         res.end();
       } else {
         res.sendStatus(401);

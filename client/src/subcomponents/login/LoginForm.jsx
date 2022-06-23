@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AuthenticationContext } from '../../index';
 
 export default function LoginForm() {
-  const { toggleAuthentication } = useContext(AuthenticationContext);
+  const { toggleAuthentication, setUserData } = useContext(AuthenticationContext);
 
   const authenticate = (e) => {
     e.preventDefault();
@@ -29,7 +29,14 @@ export default function LoginForm() {
     }
     axios.post('/authenticate', { username, password })
       .then(() => {
-        toggleAuthentication(true);
+        axios.get('/userData')
+          .then((response) => {
+            setUserData(response.data);
+            toggleAuthentication(true);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch(() => {
         passwordEl.value = '';

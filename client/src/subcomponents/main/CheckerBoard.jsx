@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-array-index-key */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthenticationContext } from '../../index';
 
 // import CheckerBoard from './CheckerBoard.js';
 const { checkerMethods } = require('./checkerMethods');
@@ -13,7 +15,7 @@ const pieces = [null, 'white-piece', 'white-queen', 'black-piece', 'black-queen'
 
 export default function CheckerBoard() {
   const [isLoading, toggleLoading] = useState(true);
-  const [board, setBoard] = useState();
+  const { boardMeta, setBoardMeta } = useContext(AuthenticationContext);
   const [turn, toggleTurn] = useState('white');
   const [
     piecesToEat, setPiecesToEat,
@@ -29,7 +31,7 @@ export default function CheckerBoard() {
   // Give state a board matrix from the server
   useEffect(() => {
     toggleLoading(false);
-    setBoard(checkerMethods.generateBoard(8));
+    setBoardMeta({ ...boardMeta, board: checkerMethods.generateBoard(8) });
   }, []);
 
   // componentDidUpdate()
@@ -60,7 +62,7 @@ export default function CheckerBoard() {
     const el = e.target;
     const rowI = parseInt(el.getAttribute('data-row'), 10);
     const colI = parseInt(el.getAttribute('data-col'), 10);
-    const piece = board[rowI][colI];
+    const piece = boardMeta.board[rowI][colI];
 
     // If there's a current obligation to eat a piece,
     // and the wrong piece is selected, do not proceed
@@ -79,23 +81,23 @@ export default function CheckerBoard() {
     // Get upward moveset for white pieces, or black queens
     if (piece === whitePiece || piece === whiteQueen || piece === blackQueen) {
       if (piecesToEat === null) {
-        moves.push(checkerMethods.getUpMoves(board, rowI, colI));
+        moves.push(checkerMethods.getUpMoves(boardMeta.board, rowI, colI));
       }
-      moves.push(checkerMethods.getUpHitMoves(board, rowI, colI));
+      moves.push(checkerMethods.getUpHitMoves(boardMeta.board, rowI, colI));
     }
     // Get downward moveset for black pieces, or white queens
     if (piece === blackPiece || piece === blackQueen || piece === whiteQueen) {
       if (piecesToEat === null) {
-        moves.push(checkerMethods.getDownMoves(board, rowI, colI));
+        moves.push(checkerMethods.getDownMoves(boardMeta.board, rowI, colI));
       }
-      moves.push(checkerMethods.getDownHitMoves(board, rowI, colI));
+      moves.push(checkerMethods.getDownHitMoves(boardMeta.board, rowI, colI));
     }
     // Highlight possible moves
     moves.flat().forEach((move) => {
       document.querySelector(`td[data-row="${move.row}"][data-col="${move.col}"]`).classList.add('potential-move');
     });
     // Highlight current piece
-    if (board[rowI][colI] !== emptyField) {
+    if (boardMeta.board[rowI][colI] !== emptyField) {
       document.querySelector(`td[data-row="${rowI}"][data-col="${colI}"]`).classList.add('potential-move');
       currentPiece = { row: rowI, col: colI };
     } else {
@@ -114,11 +116,12 @@ export default function CheckerBoard() {
     const el = e.target;
     const rowI = parseInt(el.getAttribute('data-row'), 10);
     const colI = parseInt(el.getAttribute('data-col'), 10);
-    const moveMeta = (checkerMethods.movePiece(board, currentPiece, { row: rowI, col: colI }));
+    const moveMeta = (
+      checkerMethods.movePiece(boardMeta.board, currentPiece, { row: rowI, col: colI }));
     // If move occurred, update the board
     // Perform all necessary checks and effects
     if (moveMeta.moved) {
-      setBoard(moveMeta.board);
+      setBoardMeta({ ...boardMeta, board: moveMeta.board });
       // Play corresponding sound effect
       if (moveMeta.queened) {
         newQueenSound.play();
@@ -175,9 +178,9 @@ export default function CheckerBoard() {
   const visualBoard = (
     <table className="checker-board">
       <tbody>
-        {board.map((row, rowI) => (
+        {boardMeta.board.map((row, rowI) => (
           <tr key={rowI}>
-            {board[rowI].map((col, colI) => {
+            {boardMeta.board[rowI].map((col, colI) => {
               const classes = rowI % 2 === 0 ? 'checker-field even' : 'checker-field odd';
               return (
                 <td

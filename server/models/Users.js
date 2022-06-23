@@ -14,12 +14,12 @@ const boardSchema = new mongoose.Schema({
     unique: true,
     default: new Date().getTime(),
   },
-  whitePlayerId: {
-    type: Number,
+  whitePlayerUsername: {
+    type: String,
     required: true,
   },
-  blackPlayerId: {
-    type: Number,
+  blackPlayerUsername: {
+    type: String,
     required: true,
   },
   gameStatus: {
@@ -52,11 +52,13 @@ const usersSchema = new mongoose.Schema({
   },
   invites: { type: invitesSchema, default: { invitesSchema } },
   logs: [{ type: String, default: [] }],
-  boards: [{ type: Number, default: [] }],
+  boards: [{ type: { id: Number, opponent: String }, default: [] }],
 });
 
 const Users = mongoose.model('users', usersSchema);
+const Boards = mongoose.model('boards', boardSchema);
 
 module.exports = {
   Users,
+  Boards,
 };

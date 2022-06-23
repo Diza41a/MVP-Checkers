@@ -93,33 +93,109 @@ body #root .login-form-wrap .login-form #login-submit {
   border: none;
   cursor: pointer;
 }
-body #root .meta-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-body #root .meta-wrap .meta-user {
-  color: #edf2f4;
-  font-size: 24px;
-  background-color: rgba(43, 45, 66, 0.8);
-  padding: 1vw 2vw;
-  border-bottom-left-radius: 0.75vw;
-}
-body #root main {
+body #root .main-wrap {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-evenly;
-  margin-top: 2vw;
+  align-items: space-between;
 }
-body #root main .nav {
+body #root .main-wrap .nav {
   color: #edf2f4;
   font-size: 24px;
   background-color: rgba(43, 45, 66, 0.8);
   border-radius: 2vw;
+  margin-top: 2vw;
+  height: 90vh;
+  padding: 0 2vw;
   width: 30vw;
   flex-basis: 30%;
 }
-body #root main .checker-board {
+body #root .main-wrap .nav .invites-wrap {
+  display: flex;
+  flex-direction: column;
+}
+body #root .main-wrap .nav .invites-wrap #invite-send, body #root .main-wrap .nav .invites-wrap #invites-open {
+  font-size: 28.8px;
+  border: none;
+  outline: none;
+  border-radius: 0.5vw;
+  padding: 0.75vw 2vw;
+}
+body #root .main-wrap .nav .invites-wrap #invite-send {
+  color: #2b2d42;
+}
+body #root .main-wrap .nav .invites-wrap #invites-open {
+  font-family: "Montserrat-Bold";
+  color: #edf2f4;
+  background-color: #d90429;
+  width: 60%;
+  cursor: pointer;
+  margin: 0.65vw 0;
+}
+body #root .main-wrap .nav .log-wrap, body #root .main-wrap .nav .games-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-items: flex-end;
+}
+body #root .main-wrap .nav .log-wrap .nav-header, body #root .main-wrap .nav .games-wrap .nav-header {
+  font-size: 32.4px;
+}
+body #root .main-wrap .nav .log-wrap .nav-header .log-link, body #root .main-wrap .nav .games-wrap .nav-header .log-link {
+  cursor: pointer;
+  margin-left: 0.5vw;
+}
+body #root .main-wrap .nav .log-wrap ul, body #root .main-wrap .nav .games-wrap ul {
+  margin: 1vw 0;
+  width: 100%;
+  height: 25vh;
+  list-style: none;
+  background-color: #2b2d42;
+  overflow-y: scroll;
+  /* width */
+  /* Track */
+  /* Handle */
+}
+body #root .main-wrap .nav .log-wrap ul .filter ul::-webkit-scrollbar, body #root .main-wrap .nav .games-wrap ul .filter ul::-webkit-scrollbar {
+  background-color: #8d99ae;
+  width: 1.2vw;
+}
+body #root .main-wrap .nav .log-wrap ul .filter ul::-webkit-scrollbar-track, body #root .main-wrap .nav .games-wrap ul .filter ul::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #8d99ae;
+  border-radius: 1vw;
+}
+body #root .main-wrap .nav .log-wrap ul .filter ul::-webkit-scrollbar-thumb, body #root .main-wrap .nav .games-wrap ul .filter ul::-webkit-scrollbar-thumb {
+  background: #d90429;
+  border-radius: 1vw;
+}
+body #root .main-wrap .nav .log-wrap ul li, body #root .main-wrap .nav .games-wrap ul li {
+  font-size: 28.8px;
+  text-align: center;
+  margin: 0.2vw;
+  padding: 0.35vw;
+  cursor: pointer;
+}
+body #root .main-wrap .nav .log-wrap ul li.selected, body #root .main-wrap .nav .games-wrap ul li.selected {
+  background-color: #d90429;
+}
+body #root .main-wrap .meta-wrap {
+  margin-bottom: 2vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+body #root .main-wrap .meta-wrap .meta-user {
+  color: #edf2f4;
+  font-size: 24px;
+  background-color: rgba(43, 45, 66, 0.8);
+  padding: 1vw 2vw;
+  min-width: 15vw;
+  border-radius: 0 0 0.75vw 0.75vw;
+}
+body #root .main-wrap .meta-wrap .meta-user .clock {
+  margin-right: 0.5vw;
+}
+body #root .main-wrap .checker-board {
   flex-basis: 60%;
   width: 55vw;
   height: 55vw;
@@ -129,28 +205,28 @@ body #root main .checker-board {
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
 }
-body #root main .checker-board tbody {
+body #root .main-wrap .checker-board tbody {
   border: 0.17vw solid black;
 }
-body #root main .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap .checker-board tbody .checker-field:nth-last-child(n) {
   width: 4.4vw;
   height: 4.4vw;
 }
-body #root main .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap .checker-board tbody .checker-field:nth-last-child(n) {
   width: 3.4vw;
   height: 3.4vw;
 }
-body #root main .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap .checker-board tbody .checker-field:nth-last-child(n) {
   width: 2.7333333333vw;
   height: 2.7333333333vw;
 }
-body #root main .checker-board tbody .checker-field.even:nth-child(2n), body #root main .checker-board tbody .checker-field.odd:nth-child(2n-1) {
+body #root .main-wrap .checker-board tbody .checker-field.even:nth-child(2n), body #root .main-wrap .checker-board tbody .checker-field.odd:nth-child(2n-1) {
   background-color: black;
 }
-body #root main .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root main .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
+body #root .main-wrap .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root .main-wrap .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
   background-color: #8d99ae;
 }
-body #root main .checker-board tbody .checker-field div {
+body #root .main-wrap .checker-board tbody .checker-field div {
   margin: auto;
   width: 65%;
   height: 65%;
@@ -158,18 +234,18 @@ body #root main .checker-board tbody .checker-field div {
   border: 0.4vw solid white;
   cursor: pointer;
 }
-body #root main .checker-board tbody .checker-field div.white-piece {
+body #root .main-wrap .checker-board tbody .checker-field div.white-piece {
   background-color: rgba(0, 0, 255, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
 }
-body #root main .checker-board tbody .checker-field div.white-queen {
+body #root .main-wrap .checker-board tbody .checker-field div.white-queen {
   background-color: rgba(0, 0, 255, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
   position: relative;
 }
-body #root main .checker-board tbody .checker-field div.white-queen::after {
+body #root .main-wrap .checker-board tbody .checker-field div.white-queen::after {
   content: " ";
   display: block;
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
@@ -184,18 +260,18 @@ body #root main .checker-board tbody .checker-field div.white-queen::after {
   bottom: 0;
   margin: auto;
 }
-body #root main .checker-board tbody .checker-field div.black-piece {
+body #root .main-wrap .checker-board tbody .checker-field div.black-piece {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
 }
-body #root main .checker-board tbody .checker-field div.black-queen {
+body #root .main-wrap .checker-board tbody .checker-field div.black-queen {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
   position: relative;
 }
-body #root main .checker-board tbody .checker-field div.black-queen::after {
+body #root .main-wrap .checker-board tbody .checker-field div.black-queen::after {
   content: " ";
   display: block;
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);

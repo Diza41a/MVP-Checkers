@@ -1,11 +1,11 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-// import axios from 'axios';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 // Subcomponent imports
-// eslint-disable-next-line import/no-cycle
 import LoginForm from './subcomponents/login/LoginForm';
 import Main from './subcomponents/main/Main';
 
@@ -18,26 +18,35 @@ export const AuthenticationContext = React.createContext('');
 function App() {
   const [isLoading, toggleLoading] = useState(true);
   const [isAuthenticated, toggleAuthentication] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [boardMeta, setBoardMeta] = useState(null);
   // componentDidMount
   // toggleLoading
   useEffect(() => {
     toggleLoading(false);
+    if (Cookies.get('s_id') !== undefined) {
+      axios.get('/userData')
+        .then((response) => {
+          if (response.data !== '') {
+            setUserData(response.data);
+            toggleAuthentication(true);
+          }
+        })
+        .catch();
+    }
   }, []);
 
   // componentDidUpdate
   useEffect(() => {
-    // If not in the session right now, require authentication
-    if (Cookies.get('connect.sid') === undefined) {
-      toggleAuthentication(false);
-    } else {
-      toggleAuthentication(true);
-    }
   });
 
   if (!isLoading) {
     return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
-      <AuthenticationContext.Provider value={{ isAuthenticated, toggleAuthentication }}>
+      <AuthenticationContext.Provider value={{
+        isAuthenticated, toggleAuthentication, userData, setUserData, boardMeta, setBoardMeta,
+      }}
+      >
         {!isAuthenticated ? <LoginForm /> : <Main />}
       </AuthenticationContext.Provider>
     );
