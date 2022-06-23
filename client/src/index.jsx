@@ -17,22 +17,40 @@ export const AuthenticationContext = React.createContext('');
 
 function App() {
   const [isLoading, toggleLoading] = useState(true);
-  const [isAuthenticated, toggleAuthentication] = useState(false);
+  const [isAuthenticated, toggleAuthentication] = useState(Cookies.get('s_id') !== undefined);
   const [userData, setUserData] = useState(null);
   const [boardMeta, setBoardMeta] = useState(null);
+
+  const restrictUnauthenticated = (err) => {
+    if (err?.request?.status === 401) {
+      toggleAuthentication(false);
+    }
+  };
+
   // componentDidMount
   // toggleLoading
   useEffect(() => {
-    toggleLoading(false);
     if (Cookies.get('s_id') !== undefined) {
       axios.get('/userData')
         .then((response) => {
           if (response.data !== '') {
             setUserData(response.data);
             toggleAuthentication(true);
+            toggleLoading(false);
           }
         })
-        .catch();
+        .catch((err) => {
+          if (err.request.status === 404) {
+            Cookies.remove('s_id');
+            toggleAuthentication(false);
+            toggleLoading(false);
+          } else {
+            restrictUnauthenticated(err);
+          }
+        });
+    } else {
+      toggleAuthentication(false);
+      toggleLoading(false);
     }
   }, []);
 
@@ -44,14 +62,24 @@ function App() {
     return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       <AuthenticationContext.Provider value={{
-        isAuthenticated, toggleAuthentication, userData, setUserData, boardMeta, setBoardMeta,
+        isAuthenticated,
+        toggleAuthentication,
+        userData,
+        setUserData,
+        boardMeta,
+        setBoardMeta,
+        restrictUnauthenticated,
       }}
       >
         {!isAuthenticated ? <LoginForm /> : <Main />}
       </AuthenticationContext.Provider>
     );
   }
-  return (<div>Loading...</div>);
+  return (
+    <section className="loading">
+      <div className="loading-spinner"> </div>
+    </section>
+  );
 }
 
 root.render(<App />);

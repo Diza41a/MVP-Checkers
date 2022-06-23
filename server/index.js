@@ -1,6 +1,8 @@
 // const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const socketIo = require('socket.io');
+const http = require('http');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { authenticate } = require('./controllers/authentication');
@@ -9,6 +11,7 @@ const {
 } = require('./controllers/users');
 
 const app = express();
+const server = http.createServer(app);
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -23,16 +26,40 @@ app.use(cookieParser());
 //   },
 // }));
 // authenticate
+const io = socketIo(server);
+io.on('connection', (socket) => {
+  console.log('User connected: ', socket.id);
+
+  socket.join('clock-room');
+  socket.on('update_board', (boardMeta) => {
+    updateBoard(boardMeta);
+    socket.broadcast.emit('refresh_boards', boardMeta);
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log(reason);
+  });
+});
+
+setInterval(() => {
+  io.to('clock-room').emit('time', new Date());
+}, 1000);
+
 app.post('/authenticate', (req, res) => {
   authenticate(req, res);
 });
+
+// Serve App
+app.use('/', express.static(path.join(__dirname, '../client/dist')));
 
 app.use((req, res, next) => {
   const { s_id: sessionId } = req.cookies;
   if (sessionId !== undefined) {
     req.session_id = sessionId;
+    next();
+  } else {
+    res.sendStatus(401);
   }
-  next();
 });
 
 // POST routes
@@ -50,16 +77,13 @@ app.get('/board', (req, res) => {
 });
 
 // PUT routes
-app.put('/board', (req, res) => {
-  updateBoard(req, res);
-});
-
-// Serve App
-app.use('/', express.static(path.join(__dirname, '../client/dist')));
+// app.put('/board', (req, res) => {
+//   updateBoard(req, res);
+// });
 
 // Request variables
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`listening on  http://localhost:${port}`);
 });

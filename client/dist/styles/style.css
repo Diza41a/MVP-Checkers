@@ -11,6 +11,23 @@
   padding: 0;
   font-size: 24px;
   font-family: "Montserrat";
+  /* width */
+  /* Track */
+  /* Handle */
+}
+*::-webkit-scrollbar {
+  background-color: #8d99ae;
+  width: 1.2vw;
+}
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #8d99ae;
+  border-radius: 1vw;
+  opacity: 0.5;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d90429;
+  border-radius: 1vw;
+  opacity: 0.5;
 }
 
 html {
@@ -18,11 +35,63 @@ html {
 }
 
 body {
-  background: url(../assets/images/background.jpeg);
+  background: url(../assets/images/background.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+}
+body .bg {
+  background-image: linear-gradient(-60deg, rgba(237, 242, 244, 0.5) 50%, #2b2d42 50%);
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: -50%;
+  right: -50%;
+  z-index: -1;
+  opacity: 0.25;
+  animation: slide 13s ease-in-out infinite alternate;
+}
+body .bg2 {
+  animation-direction: alternate-reverse;
+  animation-duration: 14s;
+}
+body .bg3 {
+  animation-duration: 15s;
+}
+@keyframes slide {
+  from {
+    transform: translate(-25%);
+  }
+  to {
+    transform: translate(25%);
+  }
+}
+body #root .loading {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+body #root .loading .loading-spinner {
+  border: 0.6vw solid white;
+  border-top: #d90429 0.3vw solid; /* Blue */
+  box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+  border-radius: 50%;
+  width: 10vw;
+  height: 10vw;
+  margin: auto;
+  margin-top: 40vh;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 body #root .logo {
   font-family: "Montserrat-Bold";
-  font-size: 57.6px;
+  font-size: 2.4rem;
   font-weight: lighter;
   color: #edf2f4;
   margin-bottom: 0.5vw;
@@ -38,27 +107,27 @@ body #root .login-form-wrap {
 }
 body #root .login-form-wrap .login-form {
   width: 40vw;
-  padding: 2vw;
+  padding: 5vw;
   text-align: center;
   background-color: rgba(43, 45, 66, 0.7);
   border-radius: 1vw;
 }
 body #root .login-form-wrap .login-form .login-welcome {
-  font-size: 31.2px;
+  font-size: 1.3rem;
   color: #edf2f4;
 }
 body #root .login-form-wrap .login-form .login-input-wrap {
   position: relative;
-  margin: 2vw;
+  margin: 4vw 0;
 }
 body #root .login-form-wrap .login-form .login-input-wrap input {
   width: 30vw;
-  font-size: 26.4px;
+  font-size: 1.1rem;
   padding: 0.75vw 0 0.75vw 7.5vw;
   border-radius: 0.5vw;
   border: none;
   outline: none;
-  font-size: 28.8px;
+  font-size: 1.2rem;
 }
 body #root .login-form-wrap .login-form .login-input-wrap input:focus {
   box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
@@ -76,14 +145,14 @@ body #root .login-form-wrap .login-form .login-input-wrap .login-icon {
   left: 2vw;
   top: -0.3vw;
   border-radius: 50%;
-  font-size: 55.2px;
+  font-size: 2.3rem;
   padding: 0.6vw 0.8vw;
   color: #edf2f4;
   background-color: #d90429;
 }
 body #root .login-form-wrap .login-form #login-submit {
   font-family: "Montserrat-Bold";
-  font-size: 31.2px;
+  font-size: 1.3rem;
   width: 50%;
   padding: 0.75vw;
   margin: 1vw 0 2vw 0;
@@ -94,18 +163,20 @@ body #root .login-form-wrap .login-form #login-submit {
   cursor: pointer;
 }
 body #root .main-wrap {
+  overflow: hidden;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-evenly;
-  align-items: space-between;
 }
 body #root .main-wrap .nav {
+  align-self: center;
+  justify-self: center;
   color: #edf2f4;
-  font-size: 24px;
+  font-size: 1rem;
   background-color: rgba(43, 45, 66, 0.8);
   border-radius: 2vw;
   margin-top: 2vw;
-  height: 90vh;
+  height: 95vh;
   padding: 0 2vw;
   width: 30vw;
   flex-basis: 30%;
@@ -115,7 +186,7 @@ body #root .main-wrap .nav .invites-wrap {
   flex-direction: column;
 }
 body #root .main-wrap .nav .invites-wrap #invite-send, body #root .main-wrap .nav .invites-wrap #invites-open {
-  font-size: 28.8px;
+  font-size: 1.2rem;
   border: none;
   outline: none;
   border-radius: 0.5vw;
@@ -139,7 +210,7 @@ body #root .main-wrap .nav .log-wrap, body #root .main-wrap .nav .games-wrap {
   align-items: flex-end;
 }
 body #root .main-wrap .nav .log-wrap .nav-header, body #root .main-wrap .nav .games-wrap .nav-header {
-  font-size: 32.4px;
+  font-size: 1.35rem;
 }
 body #root .main-wrap .nav .log-wrap .nav-header .log-link, body #root .main-wrap .nav .games-wrap .nav-header .log-link {
   cursor: pointer;
@@ -151,25 +222,10 @@ body #root .main-wrap .nav .log-wrap ul, body #root .main-wrap .nav .games-wrap 
   height: 25vh;
   list-style: none;
   background-color: #2b2d42;
-  overflow-y: scroll;
-  /* width */
-  /* Track */
-  /* Handle */
-}
-body #root .main-wrap .nav .log-wrap ul .filter ul::-webkit-scrollbar, body #root .main-wrap .nav .games-wrap ul .filter ul::-webkit-scrollbar {
-  background-color: #8d99ae;
-  width: 1.2vw;
-}
-body #root .main-wrap .nav .log-wrap ul .filter ul::-webkit-scrollbar-track, body #root .main-wrap .nav .games-wrap ul .filter ul::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px #8d99ae;
-  border-radius: 1vw;
-}
-body #root .main-wrap .nav .log-wrap ul .filter ul::-webkit-scrollbar-thumb, body #root .main-wrap .nav .games-wrap ul .filter ul::-webkit-scrollbar-thumb {
-  background: #d90429;
-  border-radius: 1vw;
+  overflow-y: auto;
 }
 body #root .main-wrap .nav .log-wrap ul li, body #root .main-wrap .nav .games-wrap ul li {
-  font-size: 28.8px;
+  font-size: 1.2rem;
   text-align: center;
   margin: 0.2vw;
   padding: 0.35vw;
@@ -184,18 +240,36 @@ body #root .main-wrap .meta-wrap {
   flex-wrap: wrap;
   justify-content: flex-end;
 }
+body #root .main-wrap .meta-wrap #logout {
+  font-size: 1.2rem;
+  border: none;
+  outline: none;
+  border-radius: 0.5vw 0 0 0.5vw;
+  padding: 0.75vw 2vw;
+  color: #edf2f4;
+  background-color: #2b2d42;
+  cursor: pointer;
+  position: relative;
+  right: -1vw;
+}
 body #root .main-wrap .meta-wrap .meta-user {
   color: #edf2f4;
-  font-size: 24px;
+  font-size: 1rem;
   background-color: rgba(43, 45, 66, 0.8);
-  padding: 1vw 2vw;
+  padding: 1vw 3vw 1vw 2vw;
   min-width: 15vw;
   border-radius: 0 0 0.75vw 0.75vw;
 }
 body #root .main-wrap .meta-wrap .meta-user .clock {
   margin-right: 0.5vw;
 }
-body #root .main-wrap .checker-board {
+body #root .main-wrap .games-section {
+  display: flex;
+  justify-content: center;
+}
+body #root .main-wrap .games-section .checker-board {
+  margin-bottom: 3vw;
+  align-self: center;
   flex-basis: 60%;
   width: 55vw;
   height: 55vw;
@@ -205,31 +279,31 @@ body #root .main-wrap .checker-board {
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
 }
-body #root .main-wrap .checker-board.reversed {
+body #root .main-wrap .games-section .checker-board.reversed {
   transform: scaleY(-1);
 }
-body #root .main-wrap .checker-board tbody {
+body #root .main-wrap .games-section .checker-board tbody {
   border: 0.17vw solid black;
 }
-body #root .main-wrap .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap .games-section .checker-board tbody .checker-field:nth-last-child(n) {
   width: 4.4vw;
   height: 4.4vw;
 }
-body #root .main-wrap .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap .games-section .checker-board tbody .checker-field:nth-last-child(n) {
   width: 3.4vw;
   height: 3.4vw;
 }
-body #root .main-wrap .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap .games-section .checker-board tbody .checker-field:nth-last-child(n) {
   width: 2.7333333333vw;
   height: 2.7333333333vw;
 }
-body #root .main-wrap .checker-board tbody .checker-field.even:nth-child(2n), body #root .main-wrap .checker-board tbody .checker-field.odd:nth-child(2n-1) {
+body #root .main-wrap .games-section .checker-board tbody .checker-field.even:nth-child(2n), body #root .main-wrap .games-section .checker-board tbody .checker-field.odd:nth-child(2n-1) {
   background-color: black;
 }
-body #root .main-wrap .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root .main-wrap .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
+body #root .main-wrap .games-section .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root .main-wrap .games-section .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
   background-color: #8d99ae;
 }
-body #root .main-wrap .checker-board tbody .checker-field div {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div {
   margin: auto;
   width: 65%;
   height: 65%;
@@ -237,18 +311,18 @@ body #root .main-wrap .checker-board tbody .checker-field div {
   border: 0.4vw solid white;
   cursor: pointer;
 }
-body #root .main-wrap .checker-board tbody .checker-field div.white-piece {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div.white-piece {
   background-color: rgba(0, 0, 255, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
 }
-body #root .main-wrap .checker-board tbody .checker-field div.white-queen {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div.white-queen {
   background-color: rgba(0, 0, 255, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
   position: relative;
 }
-body #root .main-wrap .checker-board tbody .checker-field div.white-queen::after {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div.white-queen::after {
   content: " ";
   display: block;
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
@@ -263,18 +337,18 @@ body #root .main-wrap .checker-board tbody .checker-field div.white-queen::after
   bottom: 0;
   margin: auto;
 }
-body #root .main-wrap .checker-board tbody .checker-field div.black-piece {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div.black-piece {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
 }
-body #root .main-wrap .checker-board tbody .checker-field div.black-queen {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div.black-queen {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
   position: relative;
 }
-body #root .main-wrap .checker-board tbody .checker-field div.black-queen::after {
+body #root .main-wrap .games-section .checker-board tbody .checker-field div.black-queen::after {
   content: " ";
   display: block;
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
@@ -288,6 +362,146 @@ body #root .main-wrap .checker-board tbody .checker-field div.black-queen::after
   top: 0;
   bottom: 0;
   margin: auto;
+}
+
+@media (max-width: 1300px), (max-height: 1315px) {
+  * {
+    font-size: 18px;
+  }
+}
+@media (max-width: 860px) {
+  * {
+    font-size: 20px;
+  }
+  body #root .login-form-wrap {
+    overflow: hidden;
+  }
+  body #root .login-form-wrap .login-form {
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  body #root .login-form-wrap .login-form .logo {
+    font-size: 4rem;
+    margin-top: 10vw;
+  }
+  body #root .login-form-wrap .login-form .login-welcome {
+    font-size: 2rem;
+  }
+  body #root .login-form-wrap .login-form .login-input-wrap {
+    position: relative;
+    margin: 15vw 0;
+  }
+  body #root .login-form-wrap .login-form .login-input-wrap input {
+    width: 80vw;
+    font-size: 2rem;
+    padding: 0.75vw 0 0.75vw 10.5vw;
+    border-radius: 0.5vw;
+    border: none;
+    outline: none;
+    font-size: 2rem;
+  }
+  body #root .login-form-wrap .login-form .login-input-wrap .login-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 50%;
+    font-size: 2.3rem;
+    color: #d90429;
+    background-color: transparent;
+  }
+  body #root .login-form-wrap .login-form #login-submit {
+    font-family: "Montserrat-Bold";
+    font-size: 2rem;
+    width: 75%;
+    padding: 1.25vw;
+    margin: 5vw 0 2vw 0;
+    border-radius: 0.75vw;
+    background-color: #d90429;
+    color: #edf2f4;
+    border: none;
+    cursor: pointer;
+  }
+  body #root .main-wrap {
+    flex-wrap: wrap;
+  }
+  body #root .main-wrap .meta-wrap {
+    padding: 1vw;
+    margin: 2vw;
+  }
+  body #root .main-wrap .meta-wrap .meta-user {
+    border-radius: 0 0 0.5vw 0.5vw;
+    width: 100vw;
+    border-radius: 0.75vw;
+    padding: 0;
+    padding-top: 1vw;
+    text-align: center;
+  }
+  body #root .main-wrap .meta-wrap .meta-user span {
+    font-family: "Montserrat-Bold";
+    display: block;
+  }
+  body #root .main-wrap .meta-wrap #logout {
+    text-align: center;
+    position: relative;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    padding: 0.75vw 2vw;
+    margin: 0;
+    border-radius: 0.5vw 0.5vw 0 0;
+  }
+  body #root .main-wrap .nav {
+    overflow: hidden;
+    flex-basis: 100%;
+    border-radius: 0;
+    margin: 0;
+  }
+  body #root .main-wrap main {
+    overflow: hidden;
+    flex-basis: 100%;
+    align-items: center;
+  }
+  body #root .main-wrap main .games-section {
+    display: flex;
+    justify-content: center;
+  }
+  body #root .main-wrap main .games-section .checker-board {
+    margin-bottom: 2vw;
+    flex-basis: 60%;
+    margin: auto;
+    margin-bottom: 3vw;
+    width: 95vw;
+    height: 95vw;
+    border-spacing: 0;
+    background-color: white;
+    border: 0.6vw solid white;
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+  }
+  body #root .main-wrap main .games-section .checker-board.reversed {
+    transform: scaleY(-1);
+  }
+  body #root .main-wrap main .games-section .checker-board tbody {
+    border: 0.17vw solid black;
+  }
+  body #root .main-wrap main .games-section .checker-board tbody .checker-field:nth-last-child(n) {
+    width: 4.4vw;
+    height: 4.4vw;
+  }
+  body #root .main-wrap main .games-section .checker-board tbody .checker-field:nth-last-child(n) {
+    width: 3.4vw;
+    height: 3.4vw;
+  }
+  body #root .main-wrap main .games-section .checker-board tbody .checker-field:nth-last-child(n) {
+    width: 2.7333333333vw;
+    height: 2.7333333333vw;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

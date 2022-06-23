@@ -1,17 +1,21 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Clock from 'react-live-clock';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 import CheckerBoard from './CheckerBoard';
 import { AuthenticationContext } from '../../index';
 
 export default function Main() {
-  const { userData, setUserData, setBoardMeta } = useContext(AuthenticationContext);
+  const {
+    userData, setUserData, boardMeta, setBoardMeta, restrictUnauthenticated, toggleAuthentication,
+  } = useContext(AuthenticationContext);
 
   const sendInvite = (e) => {
     e.preventDefault();
@@ -28,14 +32,42 @@ export default function Main() {
                   setUserData(response.data);
                 }
               })
-              .catch((innerErr) => console.log(innerErr));
+              .catch((innerErr) => {
+                console.log(innerErr);
+                restrictUnauthenticated(innerErr);
+              });
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            console.log('hereOuter');
+            restrictUnauthenticated(err);
+          });
       }
     } else {
       e.target.value += e.key;
     }
   };
+
+  // ComponentDidMount
+  useEffect((() => {
+    // Select first game in the list on page load
+    const userGames = document.querySelectorAll('[data-board-id]');
+    if (userGames.length > 0) {
+      document.querySelector('.selected')?.classList?.remove('selected');
+      const boardId = userGames[0].getAttribute('data-board-id');
+      if (boardId !== undefined) {
+        userGames[0].classList.add('selected');
+        axios.get(`/board?id=${boardId}`)
+          .then((boardResponse) => {
+            setBoardMeta(boardResponse.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            restrictUnauthenticated(err);
+          });
+      }
+    }
+  }), []);
 
   const selectBoard = (e) => {
     document.querySelector('.selected')?.classList?.remove('selected');
@@ -44,12 +76,27 @@ export default function Main() {
       e.target.classList.add('selected');
       axios.get(`/board?id=${boardId}`)
         .then((boardResponse) => {
-          console.log(boardResponse.data);
           setBoardMeta(boardResponse.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          restrictUnauthenticated(err);
+        });
     }
   };
+
+  const logout = (e) => {
+    e.preventDefault();
+    Cookies.remove('s_id');
+    toggleAuthentication(false);
+  };
+
+  let metaString = 'Pending...';
+  if (boardMeta?.whitePlayerUsername !== undefined) {
+    metaString = `| W: @${boardMeta.whitePlayerUsername} vs B: @${boardMeta.blackPlayerUsername} | `;
+  } else if (userData?.username !== undefined) {
+    metaString = `@${userData.username}`;
+  }
 
   return (
     <div className="main-wrap">
@@ -79,9 +126,11 @@ export default function Main() {
       </nav>
       <main>
         <div className="meta-wrap">
+          <i className="fa-solid fa-arrow-right-from-bracket" id="logout" onClick={logout} />
           <p className="meta-user">
             <Clock format="HH:mm:ss" ticking timezone="US/Eastern" className="clock" />
-            {`  @${userData?.username ? userData.username : 'Pending...'}`}
+            <span>{metaString}</span>
+            {boardMeta?.gameStatus ? <span>{`Status: ${boardMeta.gameStatus}'s turn`}</span> : null}
           </p>
         </div>
         <div className="games-section">

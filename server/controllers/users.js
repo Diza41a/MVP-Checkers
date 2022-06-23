@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const { checkerMethods } = require('../../client/src/subcomponents/main/checkerMethods');
 const { Users, Boards } = require('../models/Users');
 
@@ -9,9 +10,10 @@ const getUserData = (req, res) => {
   } else {
     Users.findOne({ sessionIdString }, (err, entry) => {
       if (err || entry === null) {
-        // res.sendStatus(404);
-        res.end();
+        res.sendStatus(404);
       } else {
+        ['userId', 'password', 'sessionIdString', '__v'].forEach((prop) => { entry[prop] = undefined; });
+
         res.send(entry);
       }
     });
@@ -78,8 +80,7 @@ const getBoard = (req, res) => {
   }
 };
 
-const updateBoard = (req, res) => {
-  const newBoardMeta = req.body;
+const updateBoard = (newBoardMeta) => {
   console.log(newBoardMeta);
   Boards.findOneAndUpdate(
     { id: newBoardMeta.id },
@@ -87,9 +88,6 @@ const updateBoard = (req, res) => {
     (err) => {
       if (err) {
         console.log(err);
-        res.sendStatus(500);
-      } else {
-        res.end();
       }
     },
   );

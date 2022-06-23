@@ -3,9 +3,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import io from 'socket.io-client';
+import Cookies from 'js-cookie';
 import { AuthenticationContext } from '../../index';
 
+const socket = io.connect();
 // import CheckerBoard from './CheckerBoard.js';
 const { checkerMethods } = require('./checkerMethods');
 
@@ -16,7 +18,9 @@ const pieces = [null, 'white-piece', 'white-queen', 'black-piece', 'black-queen'
 
 export default function CheckerBoard() {
   const [isLoading, toggleLoading] = useState(true);
-  const { boardMeta, setBoardMeta, userData } = useContext(AuthenticationContext);
+  const {
+    boardMeta, setBoardMeta, userData, toggleAuthentication,
+  } = useContext(AuthenticationContext);
   // const [turn, toggleTurn] = useState('white');
   const [
     piecesToEat, setPiecesToEat,
@@ -43,6 +47,16 @@ export default function CheckerBoard() {
     });
   });
 
+  // Board updates (socket)
+  useEffect(() => {
+    socket.on('refresh_boards', (updatedBoard) => {
+      const boardId = parseInt(document.querySelector('.selected')?.getAttribute('data-board-id'), 10);
+      if (boardId === updatedBoard.id) {
+        setBoardMeta(updatedBoard);
+      }
+    });
+  }, [socket]);
+
   // Visual presentation of a checker piece
   const generatePiece = (value, rowI, colI) => {
     // If value is not a checker piece, don't generate anything
@@ -54,7 +68,6 @@ export default function CheckerBoard() {
 
   // Get all of the potential moves for selected piece
   const getMoves = (e) => {
-    console.log(boardMeta, userData);
     const turn = boardMeta.gameStatus;
     if (!((boardMeta.blackPlayerUsername === userData.username && turn === 'black')
     || (boardMeta.whitePlayerUsername === userData.username && turn === 'white'))) {
@@ -128,7 +141,6 @@ export default function CheckerBoard() {
     // If move occurred, update the board
     // Perform all necessary checks and effects
     if (moveMeta.moved) {
-      setBoardMeta({ ...boardMeta, board: moveMeta.board });
       // Play corresponding sound effect
       if (moveMeta.queened) {
         newQueenSound.play();
@@ -160,13 +172,21 @@ export default function CheckerBoard() {
         // Otherwise, reset the obligations
         setPiecesToEat(null);
       }
-      console.log(boardMeta.board);
       // eslint-disable-next-line no-unused-expressions
       const gameStatus = boardMeta.gameStatus === 'white' ? 'black' : 'white';
       const newBoardMeta = { ...boardMeta, gameStatus };
-      axios.put(`/board?id=${boardMeta.id}`, newBoardMeta)
-        .then(() => setBoardMeta(newBoardMeta))
-        .catch((err) => console.log(err));
+      // TODO: test
+      if (piecesToEat === null) {
+        if (Cookies.get('s_id') !== undefined) {
+          socket.emit('update_board', newBoardMeta);
+        } else {
+          toggleAuthentication(false);
+        }
+      }
+      setBoardMeta(newBoardMeta);
+      // axios.put(`/board?id=${boardMeta.id}`, newBoardMeta)
+      //   .then(() => setBoardMeta(newBoardMeta))
+      //   .catch((err) => console.log(err));
     }
   };
 

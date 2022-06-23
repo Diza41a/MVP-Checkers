@@ -8,7 +8,6 @@
   src: url('../assets/fonts/Montserrat/static/Montserrat-SemiBold.ttf');
 }
 
-$fontSize: 24px;
 $mainDark:#2b2d42;
 $mainLight: #edf2f4;
 $mainGray: #8d99ae;
@@ -24,12 +23,34 @@ $boardBorderSize: 0.6vw;
   width: calc(40vw / $size) - $boardBorderSize;
   height: calc(40vw / $size) - $boardBorderSize;
 }
+@mixin pieceSize($size) {
+  width: 0.75 * calc(40vw / $size);
+  height: 0.75 * calc(40vw / $size);
+}
 
 * {
   margin: 0;
   padding: 0;
-  font-size: $fontSize;
+  font-size: 24px;
   font-family: 'Montserrat';
+
+  /* width */
+  &::-webkit-scrollbar {
+    background-color: $mainGray;
+    width: 1.2vw;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px $mainGray;
+    border-radius: 1vw;
+    opacity: 0.5;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+  background: $mainRed;
+  border-radius: 1vw;
+  opacity: 0.5;
+  }
 }
 
 html {
@@ -37,44 +58,70 @@ html {
 }
 
 body {
-  background: url(../assets/images/background.jpeg);
+  background: url(../assets/images/background.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+
 
   // background-color: #2b2d42;
 
 
   // Animated background (https://www.youtube.com/watch?v=htXCnRDjdvc)
-  // .bg {
-  //   background-image: linear-gradient(-60deg, $mainDark 50%, $mainLight 50%);
-  //   position: fixed;
-  //   bottom: 0;
-  //   top: 0;
-  //   left: -50%;
-  //   right: -50%;
-  //   z-index: -1;
-  //   opacity: 0.5;
-  //   animation: slide 13s ease-in-out infinite alternate;
-  // }
-  // .bg2 {
-  //   animation-direction: alternate-reverse;
-  //   animation-duration: 14s;
-  // }
-  // .bg3 {
-  //   animation-duration: 15s;
-  // }
-  // @keyframes slide {
-  //   from {
-  //     transform: translate(-25%);
-  //   }
-  //   to {
-  //     transform: translate(25%);
-  //   }
-  // }
+  .bg {
+    background-image: linear-gradient(-60deg, rgba($mainLight, 0.5) 50%, $mainDark 50%,);
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    left: -50%;
+    right: -50%;
+    z-index: -1;
+    opacity: 0.25;
+    animation: slide 13s ease-in-out infinite alternate;
+  }
+  .bg2 {
+    animation-direction: alternate-reverse;
+    animation-duration: 14s;
+  }
+  .bg3 {
+    animation-duration: 15s;
+  }
+  @keyframes slide {
+    from {
+      transform: translate(-25%);
+    }
+    to {
+      transform: translate(25%);
+    }
+  }
 
 
   #root {
+    .loading {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+
+      .loading-spinner {
+        border: $boardBorderSize solid white;
+        border-top: $mainRed 0.3vw solid; /* Blue */
+        box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+        border-radius: 50%;
+        width: 10vw;
+        height: 10vw;
+        margin: auto;
+        margin-top: 40vh;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    }
+
     .logo {
       font-family: 'Montserrat-Bold';
-      font-size: $fontSize * 2.4;
+      font-size: 1rem * 2.4;
       font-weight: lighter;
       color: $mainLight;
       margin-bottom: 0.5vw;
@@ -91,28 +138,28 @@ body {
       // Login form
       .login-form {
         width: 40vw;
-        padding: 2vw;
+        padding: 5vw;
         text-align: center;
         background-color: rgba($color: $mainDark, $alpha: 0.7);
         border-radius: 1vw;
 
         .login-welcome {
-          font-size: $fontSize * 1.3;
+          font-size: 1rem * 1.3;
           color: $mainLight;
         }
 
         .login-input-wrap {
           position: relative;
-          margin: 2vw;
+          margin: 4vw 0;
 
           input {
             width: 30vw;
-            font-size: $fontSize * 1.1;
+            font-size: 1rem * 1.1;
             padding: 0.75vw 0 0.75vw 7.5vw;
             border-radius: 0.5vw;
             border: none;
             outline: none;
-            font-size: $fontSize * 1.2;
+            font-size: 1rem * 1.2;
 
             &:focus {
               box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
@@ -134,7 +181,7 @@ body {
             left: 2vw;
             top: -0.3vw;
             border-radius: 50%;
-            font-size: $fontSize * 2.3;
+            font-size: 1rem * 2.3;
             padding: 0.6vw 0.8vw;
             color: $mainLight;
             background-color: $mainRed;
@@ -143,7 +190,7 @@ body {
 
         #login-submit {
           font-family: 'Montserrat-Bold';
-          font-size: $fontSize * 1.3;
+          font-size: 1rem * 1.3;
           width: 50%;
           padding: 0.75vw;
           margin: 1vw 0 2vw 0;
@@ -157,19 +204,20 @@ body {
     }
 
     .main-wrap {
+      overflow: hidden;
       display: flex;
       flex-wrap: nowrap;
       justify-content: space-evenly;
-      align-items: space-between;
-
       .nav {
+        align-self: center;
+        justify-self: center;
         color: $mainLight;
-        font-size: $fontSize;
+        font-size: 1rem;
         background-color: rgba($color: $mainDark, $alpha: 0.8);
         border-radius: 2vw;
 
         margin-top: 2vw;
-        height: 90vh;
+        height: 95vh;
         padding: 0 2vw;
         width: 30vw;
         flex-basis: 30%;
@@ -178,7 +226,7 @@ body {
           display: flex;
           flex-direction: column;
           #invite-send, #invites-open {
-            font-size: $fontSize * 1.2;
+            font-size: 1rem * 1.2;
             border: none;
             outline: none;
             border-radius: 0.5vw;
@@ -211,7 +259,7 @@ body {
           align-items: flex-end;
 
           .nav-header {
-            font-size: $fontSize * 1.35;
+            font-size: 1rem * 1.35;
             .log-link {
               cursor: pointer;
               margin-left: 0.5vw;
@@ -224,25 +272,10 @@ body {
             height: 25vh;
             list-style: none;
             background-color: $mainDark;
-            overflow-y: scroll;
-            /* width */
-            .filter ul::-webkit-scrollbar {
-              background-color: $mainGray;
-              width: 1.2vw;
-            }
-            /* Track */
-            .filter ul::-webkit-scrollbar-track {
-              box-shadow: inset 0 0 5px $mainGray;
-              border-radius: 1vw;
-            }
-            /* Handle */
-            .filter ul::-webkit-scrollbar-thumb {
-              background: $mainRed;
-              border-radius: 1vw;
-            }
+            overflow-y: auto;
 
             li {
-              font-size: $fontSize * 1.2;
+              font-size: 1rem * 1.2;
               text-align: center;
               margin: 0.2vw;
               padding: 0.35vw;
@@ -262,11 +295,25 @@ body {
         flex-wrap: wrap;
         justify-content: flex-end;
 
+        #logout {
+          font-size: 1rem * 1.2;
+          border: none;
+          outline: none;
+          border-radius: 0.5vw 0 0 0.5vw;
+          padding: 0.75vw 2vw;
+          color: $mainLight;
+          background-color: $mainDark;
+          cursor: pointer;
+          position: relative;
+          right: -1vw;
+          // margin: 0.2vw auto 0.2vw auto;
+        }
+
         .meta-user {
           color: $mainLight;
-          font-size: $fontSize;
+          font-size: 1rem;
           background-color: rgba($color: $mainDark, $alpha: 0.8);
-          padding: 1vw 2vw;
+          padding: 1vw 3vw 1vw 2vw;
           min-width: 15vw;
           border-radius: 0 0 0.75vw 0.75vw;
 
@@ -276,86 +323,99 @@ body {
         }
       }
 
-      // Checker board
-      .checker-board {
-        &.reversed {
-          transform: scaleY(-1);
-        }
+      .games-section {
+        display: flex;
+        justify-content: center;
+        // Checker board
+        .checker-board {
+          margin-bottom: 3vw;
+          align-self: center;
+          &.reversed {
+            transform: scaleY(-1);
+          }
 
-        flex-basis: 60%;
-        width: 55vw;
-        height: 55vw;
-        border-spacing:0;
-        background-color: white;
-        border: $boardBorderSize solid white;
-        /* offset-x | offset-y | blur-radius | spread-radius | color */
-        box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
-        tbody {
-          border: 0.17vw solid black;
-          .checker-field {
-            $boardSizes: 8, 10, 12;
-            @each $size in $boardSizes {
-              &:nth-last-child(n) {
-                @include fieldSize(($size));
-              }
-            }
-            &.even:nth-child(2n),  &.odd:nth-child(2n - 1) {
-              background-color: black;
-              &.potential-move {
-                background-color: $mainGray;
-              }
-            }
-            // All pieces
-            div {
-              margin: auto;
-              width: 65%;
-              height: 65%;
-              border-radius: 50%;
-              border: 0.4vw solid white;
-              cursor: pointer;
-
-              @mixin queenEffect ($color) {
-                content: " ";
-                display: block;
-                box-shadow: 0 0 0.75vw 0.25vw $color, inset 0 0 0.5vw 0.25vw $color;
-                border: 0.2vw solid white;
-                border-radius: 50%;
-                height: 50%;
-                width: 50%;
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-              }
-
-              &.white-piece {
-                background-color: $whiteCheckerTransparent;
-                /* offset-x | offset-y | blur-radius | spread-radius | color */
-                box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
-              }
-              &.white-queen {
-                background-color: $whiteCheckerTransparent;
-                /* offset-x | offset-y | blur-radius | spread-radius | color */
-                box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
-                position: relative;
-                &::after {
-                  @include queenEffect($whiteChecker);
+          flex-basis: 60%;
+          width: 55vw;
+          height: 55vw;
+          border-spacing:0;
+          background-color: white;
+          border: $boardBorderSize solid white;
+          /* offset-x | offset-y | blur-radius | spread-radius | color */
+          box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+          tbody {
+            border: 0.17vw solid black;
+            .checker-field {
+              $boardSizes: 8, 10, 12;
+              @each $size in $boardSizes {
+                &:nth-last-child(n) {
+                  @include fieldSize(($size));
                 }
               }
-              &.black-piece {
-                background-color: $blackCheckerTransparent;
-                /* offset-x | offset-y | blur-radius | spread-radius | color */
-                box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+              &.even:nth-child(2n),  &.odd:nth-child(2n - 1) {
+                background-color: black;
+                &.potential-move {
+                  background-color: $mainGray;
+                }
               }
-              &.black-queen {
-                background-color: $blackCheckerTransparent;
-                /* offset-x | offset-y | blur-radius | spread-radius | color */
-                box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
-                position: relative;
-                &::after {
-                  @include queenEffect($blackChecker);
+              // All pieces
+              div {
+                margin: auto;
+                $boardSizes: 8, 10, 12;
+                // @each $size in $boardSizes {
+                //   &:nth-last-child(n) {
+                //     @include pieceSize(($size));
+                //   }
+                // }
+                width: 65%;
+                height: 65%;
+
+                border-radius: 50%;
+                border: 0.4vw solid white;
+                cursor: pointer;
+
+                @mixin queenEffect ($color) {
+                  content: " ";
+                  display: block;
+                  box-shadow: 0 0 0.75vw 0.25vw $color, inset 0 0 0.5vw 0.25vw $color;
+                  border: 0.2vw solid white;
+                  border-radius: 50%;
+                  height: 50%;
+                  width: 50%;
+                  position: absolute;
+                  left: 0;
+                  right: 0;
+                  top: 0;
+                  bottom: 0;
+                  margin: auto;
+                }
+
+                &.white-piece {
+                  background-color: $whiteCheckerTransparent;
+                  /* offset-x | offset-y | blur-radius | spread-radius | color */
+                  box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
+                }
+                &.white-queen {
+                  background-color: $whiteCheckerTransparent;
+                  /* offset-x | offset-y | blur-radius | spread-radius | color */
+                  box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
+                  position: relative;
+                  &::after {
+                    @include queenEffect($whiteChecker);
+                  }
+                }
+                &.black-piece {
+                  background-color: $blackCheckerTransparent;
+                  /* offset-x | offset-y | blur-radius | spread-radius | color */
+                  box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+                }
+                &.black-queen {
+                  background-color: $blackCheckerTransparent;
+                  /* offset-x | offset-y | blur-radius | spread-radius | color */
+                  box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+                  position: relative;
+                  &::after {
+                    @include queenEffect($blackChecker);
+                  }
                 }
               }
             }
@@ -367,14 +427,161 @@ body {
   }
 }
 
-// $checkerBoardBreakpoint: 1000px;
-// @media (max-width: $checkerBoardBreakpoint) {
-//   body {
-//     #root {
-//       .checker-board {
-//         width: 80vw;
-//         height: 80vh;
-//       }
-//     }
-//   }
-// }
+$midWBreakpoint: 1300px;
+$midHBreakpoint: 1315px;
+@media (max-width: $midWBreakpoint), (max-height: $midHBreakpoint) {
+  * {
+    font-size: 18px;
+  }
+}
+
+$mobileBreakpoint: 860px;
+@media (max-width: $mobileBreakpoint) {
+  * {
+    font-size: 20px;
+  }
+
+  body {
+    #root {
+      .login-form-wrap {
+        overflow: hidden;
+        // Login form
+        .login-form {
+          width: 100vw;
+          height: 100vh;
+          text-align: center;
+          border-radius: 0;
+          overflow: hidden;
+
+          .logo {
+            font-size: 1rem * 4;
+            margin-top: 10vw;
+          }
+          .login-welcome {
+            font-size: 1rem * 2;
+          }
+
+          .login-input-wrap {
+            position: relative;
+            margin: 15vw 0;
+
+            input {
+              width: 80vw;
+              font-size: 1rem * 2;
+              padding: 0.75vw 0 0.75vw 10.5vw;
+              border-radius: 0.5vw;
+              border: none;
+              outline: none;
+              font-size: 1rem * 2;
+            }
+
+            .login-icon {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              border-radius: 50%;
+              font-size: 1rem * 2.3;
+              color: $mainRed;
+              background-color: transparent;
+            }
+          }
+
+          #login-submit {
+            font-family: 'Montserrat-Bold';
+            font-size: 1rem * 2;
+            width: 75%;
+            padding: 1.25vw;
+            margin: 5vw 0 2vw 0;
+            border-radius: 0.75vw;
+            background-color: $mainRed;
+            color: $mainLight;
+            border: none;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .main-wrap {
+        .meta-wrap {
+          padding: 1vw;
+          margin: 2vw;
+          .meta-user {
+            border-radius: 0 0 0.5vw 0.5vw;
+            width: 100vw;
+            border-radius: 0.75vw;
+            padding: 0;
+            padding-top: 1vw;
+            text-align: center;
+            span {
+              font-family: 'Montserrat-Bold';
+              display: block;
+            }
+          }
+
+          #logout {
+            text-align: center;
+            position: relative;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            font-size: 1rem * 1.5;
+            border: none;
+            outline: none;
+            padding: 0.75vw 2vw;
+            margin: 0;
+            border-radius: 0.5vw 0.5vw 0 0;
+          }
+        }
+
+        flex-wrap: wrap;
+        .nav {
+          overflow: hidden;
+          flex-basis: 100%;
+          border-radius: 0;
+          margin: 0;
+        }
+
+        main {
+          overflow: hidden;
+          flex-basis: 100%;
+          align-items: center;
+          .games-section {
+            display: flex;
+            justify-content: center;
+
+          // Checker Board
+          .checker-board {
+            margin-bottom: 2vw;
+            &.reversed {
+              transform: scaleY(-1);
+            }
+
+            flex-basis: 60%;
+            margin: auto;
+            margin-bottom: 3vw;
+            width: 95vw;
+            height: 95vw;
+            border-spacing:0;
+            background-color: white;
+            border: $boardBorderSize solid white;
+            /* offset-x | offset-y | blur-radius | spread-radius | color */
+            box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+            tbody {
+              border: 0.17vw solid black;
+              .checker-field {
+                $boardSizes: 8, 10, 12;
+                @each $size in $boardSizes {
+                  &:nth-last-child(n) {
+                    @include fieldSize(($size));
+                  }
+                }
+              }
+            }
+          }
+          }
+        }
+      }
+    }
+  }
+
+}
