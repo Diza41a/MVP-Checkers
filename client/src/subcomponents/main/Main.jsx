@@ -3,7 +3,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import Clock from 'react-live-clock';
 import axios from 'axios';
 
