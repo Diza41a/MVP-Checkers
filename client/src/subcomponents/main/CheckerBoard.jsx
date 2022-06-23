@@ -1,16 +1,23 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 
 // import CheckerBoard from './CheckerBoard.js';
-const { checkerMethods } = require('./checkerMethods.js');
+const { checkerMethods } = require('./checkerMethods');
 
-const [emptyField, whitePiece, whiteQueen, blackPiece, blackQueen, markedField] = [0, 1, 2, 3, 4, 5];
+const [
+  emptyField, whitePiece, whiteQueen, blackPiece, blackQueen,
+] = [0, 1, 2, 3, 4, 5];
 const pieces = [null, 'white-piece', 'white-queen', 'black-piece', 'black-queen'];
 
 export default function CheckerBoard() {
   const [isLoading, toggleLoading] = useState(true);
   const [board, setBoard] = useState();
   const [turn, toggleTurn] = useState('white');
-  const [piecesToEat, setPiecesToEat] = useState(null); // { piece: { row, col }, eadables: [{row, col}, ...] }
+  const [
+    piecesToEat, setPiecesToEat,
+  ] = useState(null); // { piece: { row, col }, eadables: [{row, col}, ...] }
   let currentPiece = null;
 
   // Sound effects
@@ -31,17 +38,16 @@ export default function CheckerBoard() {
     document.querySelectorAll('.potential-move').forEach((el) => {
       el.classList.remove('potential-move');
     });
-  })
+  });
 
   // Visual presentation of a checker piece
   const generatePiece = (value, rowI, colI) => {
     // If value is not a checker piece, don't generate anything
     if (value <= 0 || value >= 5) {
       return null;
-    } else {
-      return <div className={pieces[value]} data-row={rowI} data-col={colI}></div>;
     }
-  }
+    return <div className={pieces[value]} data-row={rowI} data-col={colI} />;
+  };
 
   // Get all of the potential moves for selected piece
   const getMoves = (e) => {
@@ -52,21 +58,21 @@ export default function CheckerBoard() {
 
     // Collect piece information
     const el = e.target;
-    let rowI = parseInt(el.getAttribute('data-row'), 10);
-    let colI = parseInt(el.getAttribute('data-col'), 10);
+    const rowI = parseInt(el.getAttribute('data-row'), 10);
+    const colI = parseInt(el.getAttribute('data-col'), 10);
     const piece = board[rowI][colI];
 
     // If there's a current obligation to eat a piece,
     // and the wrong piece is selected, do not proceed
     if (piecesToEat !== null
       && (piecesToEat.piece.row !== rowI || piecesToEat.piece.col !== colI)) {
-        return;
+      return;
     }
 
     const moves = [];
     // Do not proceed when it's opponent's move
-    if (turn === 'white' && (piece === blackPiece || piece === blackQueen)
-    || turn === 'black' && (piece === whitePiece || piece === whiteQueen)) {
+    if ((turn === 'white' && (piece === blackPiece || piece === blackQueen))
+    || (turn === 'black' && (piece === whitePiece || piece === whiteQueen))) {
       return;
     }
 
@@ -95,7 +101,7 @@ export default function CheckerBoard() {
     } else {
       currentPiece = null;
     }
-  }
+  };
 
   // Move a piece / Destroy an enemy
   const move = (e) => {
@@ -106,8 +112,8 @@ export default function CheckerBoard() {
 
     // Collect piece information
     const el = e.target;
-    let rowI = parseInt(el.getAttribute('data-row'), 10);
-    let colI = parseInt(el.getAttribute('data-col'), 10);
+    const rowI = parseInt(el.getAttribute('data-row'), 10);
+    const colI = parseInt(el.getAttribute('data-col'), 10);
     const moveMeta = (checkerMethods.movePiece(board, currentPiece, { row: rowI, col: colI }));
     // If move occurred, update the board
     // Perform all necessary checks and effects
@@ -140,14 +146,14 @@ export default function CheckerBoard() {
         if (hitMoves.length > 0) {
           setPiecesToEat({ piece: { row: rowI, col: colI }, eadables: hitMoves });
           return;
-        } else {
-          // Otherwise, reset the obligations
-          setPiecesToEat(null);
         }
+        // Otherwise, reset the obligations
+        setPiecesToEat(null);
       }
+      // eslint-disable-next-line no-unused-expressions
       turn === 'white' ? toggleTurn('black') : toggleTurn('white');
     }
-  }
+  };
 
   // Move handling logics unified under a single manager
   const moveManager = (e) => {
@@ -169,14 +175,25 @@ export default function CheckerBoard() {
   const visualBoard = (
     <table className="checker-board">
       <tbody>
-        {board.map((row, rowI) => {
-          return <tr key={rowI}>{board[rowI].map((col, colI) => {
-            let classes = rowI % 2 === 0 ? 'checker-field even' : 'checker-field odd';
-            return <td className={classes} key={colI}  data-row={rowI} data-col={colI} onClick={moveManager} >
-              {generatePiece(col, rowI, colI)}
-            </td>;
-          })}</tr>
-        })}
+        {board.map((row, rowI) => (
+          <tr key={rowI}>
+            {board[rowI].map((col, colI) => {
+              const classes = rowI % 2 === 0 ? 'checker-field even' : 'checker-field odd';
+              return (
+                <td
+                  className={classes}
+                  key={colI}
+                  data-row={rowI}
+                  data-col={colI}
+                  onClick={moveManager}
+                >
+                  {generatePiece(col, rowI, colI)}
+                </td>
+              );
+            })}
+
+          </tr>
+        ))}
       </tbody>
     </table>
   );
@@ -184,4 +201,4 @@ export default function CheckerBoard() {
   return (
     <div>{visualBoard}</div>
   );
-};
+}
