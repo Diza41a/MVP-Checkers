@@ -4,7 +4,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Clock from 'react-live-clock';
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -19,7 +19,7 @@ export default function Main() {
     userData, setUserData, boardMeta, setBoardMeta, restrictUnauthenticated, toggleAuthentication,
   } = useContext(AuthenticationContext);
 
-  const [selectedBoard, setSelectedBoard] = useState(0);
+  // const [selectedBoard, setSelectedBoard] = useState(0);
 
   const sendInvite = (e) => {
     e.preventDefault();
