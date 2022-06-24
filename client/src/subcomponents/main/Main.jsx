@@ -107,18 +107,18 @@ export default function Main() {
     });
   }, [socket]);
 
-  useEffect((() => {
-    axios.get('/userData')
-      .then((response) => {
-        if (response.data !== '') {
-          setUserData(response.data);
-        }
-      })
-      .catch((innerErr) => {
-        console.log(innerErr);
-        restrictUnauthenticated(innerErr);
-      });
-  }), [userData]);
+  // useEffect((() => {
+  //   axios.get('/userData')
+  //     .then((response) => {
+  //       if (response.data !== '') {
+  //         setUserData(response.data);
+  //       }
+  //     })
+  //     .catch((innerErr) => {
+  //       console.log(innerErr);
+  //       restrictUnauthenticated(innerErr);
+  //     });
+  // }), [userData]);
 
   const selectBoard = (e) => {
     document.querySelector('.selected')?.classList?.remove('selected');
