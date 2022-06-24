@@ -58,8 +58,8 @@ const usersSchema = new mongoose.Schema({
 const Users = mongoose.model('users', usersSchema);
 const Boards = mongoose.model('boards', boardSchema);
 
-Boards.watch()
-  .on('change', (data) => console.log(data));
+// Boards.watch()
+//   .on('change', (data) => console.log(data));
 
 module.exports = {
   Users,

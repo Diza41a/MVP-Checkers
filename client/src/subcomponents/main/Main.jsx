@@ -4,18 +4,22 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Clock from 'react-live-clock';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-
+import io from 'socket.io-client';
 import CheckerBoard from './CheckerBoard';
 import { AuthenticationContext } from '../../index';
+
+const socket = io.connect();
 
 export default function Main() {
   const {
     userData, setUserData, boardMeta, setBoardMeta, restrictUnauthenticated, toggleAuthentication,
   } = useContext(AuthenticationContext);
+
+  const [selectedBoard, setSelectedBoard] = useState(0);
 
   const sendInvite = (e) => {
     e.preventDefault();
@@ -24,24 +28,36 @@ export default function Main() {
       const inviteUsername = inviteInputEl.value.trim();
       // eslint-disable-next-line no-restricted-globals
       if (inviteUsername.length > 3 && isNaN(inviteUsername)) {
-        axios.post('/invite', { username: userData.username, opponent: inviteUsername.toLowerCase() })
-          .then(() => {
-            axios.get('/userData')
-              .then((response) => {
-                if (response.data !== '') {
-                  setUserData(response.data);
-                }
-              })
-              .catch((innerErr) => {
-                console.log(innerErr);
-                restrictUnauthenticated(innerErr);
-              });
+        socket.emit('post_invite', { username: userData.username, opponent: inviteUsername.toLowerCase() });
+        axios.get('/userData')
+          .then((response) => {
+            if (response.data !== '') {
+              setUserData(response.data);
+            }
           })
-          .catch((err) => {
-            console.log(err);
-            console.log('hereOuter');
-            restrictUnauthenticated(err);
+          .catch((innerErr) => {
+            console.log(innerErr);
+            restrictUnauthenticated(innerErr);
           });
+        // eslint-disable-next-line max-len
+        // axios.post('/invite', { username: userData.username, opponent: inviteUsername.toLowerCase() })
+        //   .then(() => {
+        //     axios.get('/userData')
+        //       .then((response) => {
+        //         if (response.data !== '') {
+        //           setUserData(response.data);
+        //         }
+        //       })
+        //       .catch((innerErr) => {
+        //         console.log(innerErr);
+        //         restrictUnauthenticated(innerErr);
+        //       });
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //     console.log('hereOuter');
+        //     restrictUnauthenticated(err);
+        //   });
       }
     } else {
       e.target.value += e.key;
@@ -69,6 +85,41 @@ export default function Main() {
     }
   }), []);
 
+  // Invite updates (socket)
+  useEffect(() => {
+    socket.on('refresh_invites', (invitesArray) => {
+      for (let i = 0; i < invitesArray.length; i += 1) {
+        if (invitesArray[i].username === userData.username) {
+          const newBoards = [
+            ...userData.boards, { opponent: invitesArray[i].opponent, id: invitesArray[i].boardId },
+          ];
+          const newUserData = { ...userData };
+          delete newUserData.boards;
+          console.log(newUserData.boards);
+          setUserData(
+            {
+              ...newUserData,
+              boards: newBoards,
+            },
+          );
+        }
+      }
+    });
+  }, [socket]);
+
+  useEffect((() => {
+    axios.get('/userData')
+      .then((response) => {
+        if (response.data !== '') {
+          setUserData(response.data);
+        }
+      })
+      .catch((innerErr) => {
+        console.log(innerErr);
+        restrictUnauthenticated(innerErr);
+      });
+  }), [userData]);
+
   const selectBoard = (e) => {
     document.querySelector('.selected')?.classList?.remove('selected');
     const boardId = e.target.getAttribute('data-board-id');
@@ -92,10 +143,12 @@ export default function Main() {
   };
 
   let metaString = 'Pending...';
-  if (boardMeta?.whitePlayerUsername !== undefined) {
-    metaString = `| W: @${boardMeta.whitePlayerUsername} vs B: @${boardMeta.blackPlayerUsername} | `;
-  } else if (userData?.username !== undefined) {
-    metaString = `@${userData.username}`;
+  // if (boardMeta?.whitePlayerUsername !== undefined) {
+  // eslint-disable-next-line max-len
+  //   // metaString = `| W: @${boardMeta.whitePlayerUsername} vs B: @${boardMeta.blackPlayerUsername} | `;
+  // }
+  if (userData?.username !== undefined) {
+    metaString = ` | Username: @${userData.username} | `;
   }
 
   return (
@@ -128,7 +181,7 @@ export default function Main() {
         <div className="meta-wrap">
           <i className="fa-solid fa-arrow-right-from-bracket" id="logout" onClick={logout} />
           <p className="meta-user">
-            <Clock format="HH:mm:ss" ticking timezone="US/Eastern" className="clock" />
+            <Clock format="HH:mm" ticking timezone="US/Eastern" className="clock" />
             <span>{metaString}</span>
             {boardMeta?.gameStatus ? <span>{`Status: ${boardMeta.gameStatus}'s turn`}</span> : null}
           </p>

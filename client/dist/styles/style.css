@@ -167,6 +167,7 @@ body #root .main-wrap {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-evenly;
+  flex-basis: 100%;
 }
 body #root .main-wrap .nav {
   align-self: center;
@@ -234,17 +235,26 @@ body #root .main-wrap .nav .log-wrap ul li, body #root .main-wrap .nav .games-wr
 body #root .main-wrap .nav .log-wrap ul li.selected, body #root .main-wrap .nav .games-wrap ul li.selected {
   background-color: #d90429;
 }
-body #root .main-wrap .meta-wrap {
+body #root .main-wrap main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+body #root .main-wrap main .meta-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
   margin-bottom: 2vw;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
 }
-body #root .main-wrap .meta-wrap #logout {
+body #root .main-wrap main .meta-wrap #logout {
   font-size: 1.2rem;
   border: none;
   outline: none;
-  border-radius: 0.5vw 0 0 0.5vw;
+  border-radius: 0 0 0 0.5vw;
   padding: 0.75vw 2vw;
   color: #edf2f4;
   background-color: #2b2d42;
@@ -252,7 +262,7 @@ body #root .main-wrap .meta-wrap #logout {
   position: relative;
   right: -1vw;
 }
-body #root .main-wrap .meta-wrap .meta-user {
+body #root .main-wrap main .meta-wrap .meta-user {
   color: #edf2f4;
   font-size: 1rem;
   background-color: rgba(43, 45, 66, 0.8);
@@ -260,15 +270,15 @@ body #root .main-wrap .meta-wrap .meta-user {
   min-width: 15vw;
   border-radius: 0 0 0.75vw 0.75vw;
 }
-body #root .main-wrap .meta-wrap .meta-user .clock {
+body #root .main-wrap main .meta-wrap .meta-user .clock {
   margin-right: 0.5vw;
 }
-body #root .main-wrap .games-section {
+body #root .main-wrap main .games-section {
   display: flex;
   justify-content: center;
 }
-body #root .main-wrap .games-section .checker-board {
-  margin-bottom: 3vw;
+body #root .main-wrap main .games-section .checker-board {
+  margin-top: 4vw;
   align-self: center;
   flex-basis: 60%;
   width: 55vw;
@@ -279,31 +289,31 @@ body #root .main-wrap .games-section .checker-board {
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
 }
-body #root .main-wrap .games-section .checker-board.reversed {
+body #root .main-wrap main .games-section .checker-board.reversed {
   transform: scaleY(-1);
 }
-body #root .main-wrap .games-section .checker-board tbody {
+body #root .main-wrap main .games-section .checker-board tbody {
   border: 0.17vw solid black;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field:nth-last-child(n) {
   width: 4.4vw;
   height: 4.4vw;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field:nth-last-child(n) {
   width: 3.4vw;
   height: 3.4vw;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field:nth-last-child(n) {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field:nth-last-child(n) {
   width: 2.7333333333vw;
   height: 2.7333333333vw;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field.even:nth-child(2n), body #root .main-wrap .games-section .checker-board tbody .checker-field.odd:nth-child(2n-1) {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field.even:nth-child(2n), body #root .main-wrap main .games-section .checker-board tbody .checker-field.odd:nth-child(2n-1) {
   background-color: black;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root .main-wrap .games-section .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field.even:nth-child(2n).potential-move, body #root .main-wrap main .games-section .checker-board tbody .checker-field.odd:nth-child(2n-1).potential-move {
   background-color: #8d99ae;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div {
   margin: auto;
   width: 65%;
   height: 65%;
@@ -311,18 +321,18 @@ body #root .main-wrap .games-section .checker-board tbody .checker-field div {
   border: 0.4vw solid white;
   cursor: pointer;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div.white-piece {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div.white-piece {
   background-color: rgba(0, 0, 255, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div.white-queen {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div.white-queen {
   background-color: rgba(0, 0, 255, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
   position: relative;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div.white-queen::after {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div.white-queen::after {
   content: " ";
   display: block;
   box-shadow: 0 0 0.75vw 0.25vw rgba(0, 0, 255, 0.864), inset 0 0 0.5vw 0.25vw rgba(0, 0, 255, 0.864);
@@ -337,18 +347,18 @@ body #root .main-wrap .games-section .checker-board tbody .checker-field div.whi
   bottom: 0;
   margin: auto;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div.black-piece {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div.black-piece {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div.black-queen {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div.black-queen {
   background-color: rgba(255, 0, 0, 0.444);
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
   position: relative;
 }
-body #root .main-wrap .games-section .checker-board tbody .checker-field div.black-queen::after {
+body #root .main-wrap main .games-section .checker-board tbody .checker-field div.black-queen::after {
   content: " ";
   display: block;
   box-shadow: 0 0 0.75vw 0.25vw rgba(255, 0, 0, 0.864), inset 0 0 0.5vw 0.25vw rgba(255, 0, 0, 0.864);
@@ -427,25 +437,28 @@ body #root .main-wrap .games-section .checker-board tbody .checker-field div.bla
   body #root .main-wrap {
     flex-wrap: wrap;
   }
-  body #root .main-wrap .meta-wrap {
+  body #root .main-wrap main .meta-wrap {
     padding: 1vw;
     margin: 2vw;
+    position: initial;
+    flex-direction: column;
   }
-  body #root .main-wrap .meta-wrap .meta-user {
+  body #root .main-wrap main .meta-wrap .meta-user {
     border-radius: 0 0 0.5vw 0.5vw;
-    width: 100vw;
+    width: 100%;
     border-radius: 0.75vw;
     padding: 0;
     padding-top: 1vw;
+    padding-bottom: 2vw;
     text-align: center;
   }
-  body #root .main-wrap .meta-wrap .meta-user span {
+  body #root .main-wrap main .meta-wrap .meta-user span {
     font-family: "Montserrat-Bold";
     display: block;
   }
-  body #root .main-wrap .meta-wrap #logout {
+  body #root .main-wrap main .meta-wrap #logout {
     text-align: center;
-    position: relative;
+    position: static;
     left: 0;
     right: 0;
     width: 100vw;
@@ -461,6 +474,7 @@ body #root .main-wrap .games-section .checker-board tbody .checker-field div.bla
     flex-basis: 100%;
     border-radius: 0;
     margin: 0;
+    height: 80vh;
   }
   body #root .main-wrap main {
     overflow: hidden;

@@ -54,10 +54,6 @@ function App() {
     }
   }, []);
 
-  // componentDidUpdate
-  useEffect(() => {
-  });
-
   if (!isLoading) {
     return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values

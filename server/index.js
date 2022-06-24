@@ -31,9 +31,21 @@ io.on('connection', (socket) => {
   console.log('User connected: ', socket.id);
 
   socket.join('clock-room');
+  // Update board
   socket.on('update_board', (boardMeta) => {
     updateBoard(boardMeta);
     socket.broadcast.emit('refresh_boards', boardMeta);
+  });
+
+  // Send invite to other user
+  socket.on('post_invite', (invite) => {
+    postInvite(invite)
+      .then((invitesArray) => {
+        socket.broadcast.emit('refresh_invites', invitesArray);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 
   socket.on('disconnect', (reason) => {
@@ -62,10 +74,10 @@ app.use((req, res, next) => {
   }
 });
 
-// POST routes
-app.post('/invite', (req, res) => {
-  postInvite(req, res);
-});
+// // POST routes
+// app.post('/invite', (req, res) => {
+//   postInvite(req, res);
+// });
 
 // GET routes
 app.get('/userData', (req, res) => {

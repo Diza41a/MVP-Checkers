@@ -208,6 +208,7 @@ body {
       display: flex;
       flex-wrap: nowrap;
       justify-content: space-evenly;
+      flex-basis: 100%;
       .nav {
         align-self: center;
         justify-self: center;
@@ -288,133 +289,142 @@ body {
         }
       }
 
-      // Meta (top)
-      .meta-wrap {
-        margin-bottom: 2vw;
+      main {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-
-        #logout {
-          font-size: 1rem * 1.2;
-          border: none;
-          outline: none;
-          border-radius: 0.5vw 0 0 0.5vw;
-          padding: 0.75vw 2vw;
-          color: $mainLight;
-          background-color: $mainDark;
-          cursor: pointer;
-          position: relative;
-          right: -1vw;
-          // margin: 0.2vw auto 0.2vw auto;
-        }
-
-        .meta-user {
-          color: $mainLight;
-          font-size: 1rem;
-          background-color: rgba($color: $mainDark, $alpha: 0.8);
-          padding: 1vw 3vw 1vw 2vw;
-          min-width: 15vw;
-          border-radius: 0 0 0.75vw 0.75vw;
-
-          .clock {
-            margin-right: 0.5vw;
-          }
-        }
-      }
-
-      .games-section {
-        display: flex;
+        flex-direction: column;
         justify-content: center;
-        // Checker board
-        .checker-board {
-          margin-bottom: 3vw;
-          align-self: center;
-          &.reversed {
-            transform: scaleY(-1);
+        position: relative;
+
+        .meta-wrap {
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin-bottom: 2vw;
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: flex-end;
+
+          #logout {
+            font-size: 1rem * 1.2;
+            border: none;
+            outline: none;
+            border-radius: 0 0 0 0.5vw;
+            padding: 0.75vw 2vw;
+            color: $mainLight;
+            background-color: $mainDark;
+            cursor: pointer;
+            position: relative;
+            right: -1vw;
+            // margin: 0.2vw auto 0.2vw auto;
           }
 
-          flex-basis: 60%;
-          width: 55vw;
-          height: 55vw;
-          border-spacing:0;
-          background-color: white;
-          border: $boardBorderSize solid white;
-          /* offset-x | offset-y | blur-radius | spread-radius | color */
-          box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
-          tbody {
-            border: 0.17vw solid black;
-            .checker-field {
-              $boardSizes: 8, 10, 12;
-              @each $size in $boardSizes {
-                &:nth-last-child(n) {
-                  @include fieldSize(($size));
-                }
-              }
-              &.even:nth-child(2n),  &.odd:nth-child(2n - 1) {
-                background-color: black;
-                &.potential-move {
-                  background-color: $mainGray;
-                }
-              }
-              // All pieces
-              div {
-                margin: auto;
+          .meta-user {
+            color: $mainLight;
+            font-size: 1rem;
+            background-color: rgba($color: $mainDark, $alpha: 0.8);
+            padding: 1vw 3vw 1vw 2vw;
+            min-width: 15vw;
+            border-radius: 0 0 0.75vw 0.75vw;
+
+            .clock {
+              margin-right: 0.5vw;
+            }
+          }
+        }
+
+        .games-section {
+          display: flex;
+          justify-content: center;
+          // Checker board
+          .checker-board {
+            margin-top: 4vw;
+            align-self: center;
+            &.reversed {
+              transform: scaleY(-1);
+            }
+
+            flex-basis: 60%;
+            width: 55vw;
+            height: 55vw;
+            border-spacing:0;
+            background-color: white;
+            border: $boardBorderSize solid white;
+            /* offset-x | offset-y | blur-radius | spread-radius | color */
+            box-shadow: 0 0 0.8vw 0.3vw white, inset 0 0 0 0.125vw black;
+            tbody {
+              border: 0.17vw solid black;
+              .checker-field {
                 $boardSizes: 8, 10, 12;
-                // @each $size in $boardSizes {
-                //   &:nth-last-child(n) {
-                //     @include pieceSize(($size));
-                //   }
-                // }
-                width: 65%;
-                height: 65%;
-
-                border-radius: 50%;
-                border: 0.4vw solid white;
-                cursor: pointer;
-
-                @mixin queenEffect ($color) {
-                  content: " ";
-                  display: block;
-                  box-shadow: 0 0 0.75vw 0.25vw $color, inset 0 0 0.5vw 0.25vw $color;
-                  border: 0.2vw solid white;
-                  border-radius: 50%;
-                  height: 50%;
-                  width: 50%;
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  top: 0;
-                  bottom: 0;
-                  margin: auto;
-                }
-
-                &.white-piece {
-                  background-color: $whiteCheckerTransparent;
-                  /* offset-x | offset-y | blur-radius | spread-radius | color */
-                  box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
-                }
-                &.white-queen {
-                  background-color: $whiteCheckerTransparent;
-                  /* offset-x | offset-y | blur-radius | spread-radius | color */
-                  box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
-                  position: relative;
-                  &::after {
-                    @include queenEffect($whiteChecker);
+                @each $size in $boardSizes {
+                  &:nth-last-child(n) {
+                    @include fieldSize(($size));
                   }
                 }
-                &.black-piece {
-                  background-color: $blackCheckerTransparent;
-                  /* offset-x | offset-y | blur-radius | spread-radius | color */
-                  box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+                &.even:nth-child(2n),  &.odd:nth-child(2n - 1) {
+                  background-color: black;
+                  &.potential-move {
+                    background-color: $mainGray;
+                  }
                 }
-                &.black-queen {
-                  background-color: $blackCheckerTransparent;
-                  /* offset-x | offset-y | blur-radius | spread-radius | color */
-                  box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
-                  position: relative;
-                  &::after {
-                    @include queenEffect($blackChecker);
+                // All pieces
+                div {
+                  margin: auto;
+                  $boardSizes: 8, 10, 12;
+                  // @each $size in $boardSizes {
+                  //   &:nth-last-child(n) {
+                  //     @include pieceSize(($size));
+                  //   }
+                  // }
+                  width: 65%;
+                  height: 65%;
+
+                  border-radius: 50%;
+                  border: 0.4vw solid white;
+                  cursor: pointer;
+
+                  @mixin queenEffect ($color) {
+                    content: " ";
+                    display: block;
+                    box-shadow: 0 0 0.75vw 0.25vw $color, inset 0 0 0.5vw 0.25vw $color;
+                    border: 0.2vw solid white;
+                    border-radius: 50%;
+                    height: 50%;
+                    width: 50%;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                  }
+
+                  &.white-piece {
+                    background-color: $whiteCheckerTransparent;
+                    /* offset-x | offset-y | blur-radius | spread-radius | color */
+                    box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
+                  }
+                  &.white-queen {
+                    background-color: $whiteCheckerTransparent;
+                    /* offset-x | offset-y | blur-radius | spread-radius | color */
+                    box-shadow: 0 0 0.75vw 0.25vw $whiteChecker, inset 0 0 0.5vw 0.25vw $whiteChecker;
+                    position: relative;
+                    &::after {
+                      @include queenEffect($whiteChecker);
+                    }
+                  }
+                  &.black-piece {
+                    background-color: $blackCheckerTransparent;
+                    /* offset-x | offset-y | blur-radius | spread-radius | color */
+                    box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+                  }
+                  &.black-queen {
+                    background-color: $blackCheckerTransparent;
+                    /* offset-x | offset-y | blur-radius | spread-radius | color */
+                    box-shadow: 0 0 0.75vw 0.25vw $blackChecker, inset 0 0 0.5vw 0.25vw $blackChecker;
+                    position: relative;
+                    &::after {
+                      @include queenEffect($blackChecker);
+                    }
                   }
                 }
               }
@@ -422,7 +432,7 @@ body {
           }
         }
       }
-
+      // Meta (top)
     }
   }
 }
@@ -502,34 +512,39 @@ $mobileBreakpoint: 860px;
       }
 
       .main-wrap {
-        .meta-wrap {
-          padding: 1vw;
-          margin: 2vw;
-          .meta-user {
-            border-radius: 0 0 0.5vw 0.5vw;
-            width: 100vw;
-            border-radius: 0.75vw;
-            padding: 0;
-            padding-top: 1vw;
-            text-align: center;
-            span {
-              font-family: 'Montserrat-Bold';
-              display: block;
+        main {
+          .meta-wrap {
+            padding: 1vw;
+            margin: 2vw;
+            position: initial;
+            flex-direction: column;
+            .meta-user {
+              border-radius: 0 0 0.5vw 0.5vw;
+              width: 100%;
+              border-radius: 0.75vw;
+              padding: 0;
+              padding-top: 1vw;
+              padding-bottom: 2vw;
+              text-align: center;
+              span {
+                font-family: 'Montserrat-Bold';
+                display: block;
+              }
             }
-          }
 
-          #logout {
-            text-align: center;
-            position: relative;
-            left: 0;
-            right: 0;
-            width: 100vw;
-            font-size: 1rem * 1.5;
-            border: none;
-            outline: none;
-            padding: 0.75vw 2vw;
-            margin: 0;
-            border-radius: 0.5vw 0.5vw 0 0;
+            #logout {
+              text-align: center;
+              position: static;
+              left: 0;
+              right: 0;
+              width: 100vw;
+              font-size: 1rem * 1.5;
+              border: none;
+              outline: none;
+              padding: 0.75vw 2vw;
+              margin: 0;
+              border-radius: 0.5vw 0.5vw 0 0;
+            }
           }
         }
 
@@ -539,6 +554,7 @@ $mobileBreakpoint: 860px;
           flex-basis: 100%;
           border-radius: 0;
           margin: 0;
+          height: 80vh;
         }
 
         main {

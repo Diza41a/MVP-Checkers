@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-param-reassign */
 const { checkerMethods } = require('../../client/src/subcomponents/main/checkerMethods');
 const { Users, Boards } = require('../models/Users');
@@ -21,48 +22,46 @@ const getUserData = (req, res) => {
 };
 
 const boardSizes = [8, 10, 12];
-const postInvite = (req, res) => {
-  // For now, forces a new game. Later, refactor to include full-on invite logic
-  const { username, opponent } = req.body;
-  Users.findOne({ username: opponent }, (err, entry) => {
-    if (err) {
-      console.log(err);
-      res.end();
-    } else if (entry === null) {
-      console.log('Opponent doesn\'t exist');
-      res.end();
-    } else {
-      const boardSize = boardSizes[Math.floor(Math.random() * boardSizes.length)];
-      const boardId = new Date().getTime();
-      const board = new Boards({
-        id: boardId,
-        whitePlayerUsername: username,
-        blackPlayerUsername: opponent,
-        board: checkerMethods.generateBoard(boardSize),
-      });
-      board.save((errSave) => {
-        if (errSave) {
-          console.log(errSave);
-          res.end();
-        } else {
-          Users.findOneAndUpdate(
-            { username },
-            { $push: { boards: { id: boardId, opponent } } },
-            () => {
-              Users.findOneAndUpdate(
-                { username: opponent },
-                { $push: { boards: { id: boardId, opponent: username } } },
-                () => {
-                  res.end();
-                },
-              );
-            },
-          );
-        }
-      });
-    }
-  });
-};
+const postInvite = ({ username, opponent }) => (
+// For now, forces a new game. Later, refactor to include full-on invite logic
+  new Promise((resolve, reject) => {
+    Users.findOne({ }, (err, entry) => {
+      if (err || entry === null) {
+        reject(err);
+      } else {
+        const boardSize = boardSizes[Math.floor(Math.random() * boardSizes.length)];
+        const boardId = new Date().getTime();
+        const board = new Boards({
+          id: boardId,
+          whitePlayerUsername: username,
+          blackPlayerUsername: opponent,
+          board: checkerMethods.generateBoard(boardSize),
+        });
+        board.save((errSave) => {
+          if (errSave) {
+            reject(err);
+          } else {
+            Users.findOneAndUpdate(
+              { username },
+              { $push: { boards: { id: boardId, opponent } } },
+              () => {
+                Users.findOneAndUpdate(
+                  { username: opponent },
+                  { $push: { boards: { id: boardId, opponent: username } } },
+                  () => {
+                    resolve([
+                      { username, opponent, boardId },
+                      { username: opponent, opponent: username, boardId },
+                    ]);
+                  },
+                );
+              },
+            );
+          }
+        });
+      }
+    });
+  }));
 
 const getBoard = (req, res) => {
   const id = req.query?.id;
@@ -81,7 +80,6 @@ const getBoard = (req, res) => {
 };
 
 const updateBoard = (newBoardMeta) => {
-  console.log(newBoardMeta);
   Boards.findOneAndUpdate(
     { id: newBoardMeta.id },
     { board: newBoardMeta.board, gameStatus: newBoardMeta.gameStatus },

@@ -133,6 +133,7 @@ export default function CheckerBoard() {
     }
 
     // Collect piece information
+    let noPiecesToEat = true;
     const el = e.target;
     const rowI = parseInt(el.getAttribute('data-row'), 10);
     const colI = parseInt(el.getAttribute('data-col'), 10);
@@ -166,17 +167,19 @@ export default function CheckerBoard() {
         // If obligation for a hit move exists,
         // don't toggle turn, or allow any other moves...
         if (hitMoves.length > 0) {
+          noPiecesToEat = false;
           setPiecesToEat({ piece: { row: rowI, col: colI }, eadables: hitMoves });
           return;
         }
         // Otherwise, reset the obligations
+        noPiecesToEat = true;
         setPiecesToEat(null);
       }
       // eslint-disable-next-line no-unused-expressions
       const gameStatus = boardMeta.gameStatus === 'white' ? 'black' : 'white';
       const newBoardMeta = { ...boardMeta, gameStatus };
       // TODO: test
-      if (piecesToEat === null) {
+      if (noPiecesToEat) {
         if (Cookies.get('s_id') !== undefined) {
           socket.emit('update_board', newBoardMeta);
         } else {
